@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
+import PackageDetail from './pages/PackageDetail';
 
 function App() {
   return (
@@ -12,10 +13,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/catalog" element={<Catalog />} />
+          <Route path="/package/:id" element={<PackageDetail />} />
         </Routes>
       </main>
       <Footer />
-    </div>
+      </div>
   );
 }
 

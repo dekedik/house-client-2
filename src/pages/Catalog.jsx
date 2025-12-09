@@ -9,14 +9,14 @@ function Catalog() {
 
   // Mock data для домов
   const houses = [
-    { id: 1, title: 'Коттедж "Премиум"', type: 'cottages', price: 8500000, area: 180, bedrooms: 4, image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600' },
-    { id: 2, title: 'Дачный дом "Комфорт"', type: 'dachas', price: 3200000, area: 90, bedrooms: 2, image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600' },
-    { id: 3, title: 'Баня "Классика"', type: 'baths', price: 1500000, area: 45, bedrooms: 0, image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600' },
-    { id: 4, title: 'Одноэтажный дом "Уют"', type: 'one-floor', price: 4200000, area: 120, bedrooms: 3, image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600' },
-    { id: 5, title: 'Двухэтажный дом "Семейный"', type: 'two-floor', price: 6800000, area: 200, bedrooms: 5, image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=600' },
-    { id: 6, title: 'Дом-баня "Русская"', type: 'house-bath', price: 2800000, area: 75, bedrooms: 2, image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600' },
-    { id: 7, title: 'Коттедж "Элит"', type: 'cottages', price: 12000000, area: 250, bedrooms: 6, image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600' },
-    { id: 8, title: 'Дачный дом "Мини"', type: 'dachas', price: 1800000, area: 60, bedrooms: 1, image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600' },
+    { id: 1, title: 'Коттедж "Премиум"', type: 'cottages', price: 8500000, area: 180, bedrooms: 4, image: '/images/houses/cottage-premium.jpg' },
+    { id: 2, title: 'Дачный дом "Комфорт"', type: 'dachas', price: 3200000, area: 90, bedrooms: 2, image: '/images/houses/dacha-comfort.jpg' },
+    { id: 3, title: 'Баня "Классика"', type: 'baths', price: 1500000, area: 45, bedrooms: 0, image: '/images/houses/bath-classic.jpg' },
+    { id: 4, title: 'Одноэтажный дом "Уют"', type: 'one-floor', price: 4200000, area: 120, bedrooms: 3, image: '/images/houses/one-floor-cozy.jpg' },
+    { id: 5, title: 'Двухэтажный дом "Семейный"', type: 'two-floor', price: 6800000, area: 200, bedrooms: 5, image: '/images/houses/two-floor-family.jpg' },
+    { id: 6, title: 'Дом-баня "Русская"', type: 'house-bath', price: 2800000, area: 75, bedrooms: 2, image: '/images/houses/house-bath-russian.jpg' },
+    { id: 7, title: 'Коттедж "Элит"', type: 'cottages', price: 12000000, area: 250, bedrooms: 6, image: '/images/houses/cottage-elite.jpg' },
+    { id: 8, title: 'Дачный дом "Мини"', type: 'dachas', price: 1800000, area: 60, bedrooms: 1, image: '/images/houses/dacha-mini.jpg' },
   ];
 
   const types = [
@@ -144,6 +144,9 @@ function Catalog() {
                         src={house.image} 
                         alt={house.title}
                         className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          e.target.src = '/images/houses/placeholder.svg';
+                        }}
                       />
                     </div>
                     <div className="p-6">

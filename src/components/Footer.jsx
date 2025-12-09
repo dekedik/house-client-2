@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400">
+    <footer className="text-gray-400" style={{ backgroundColor: '#0e0403' }}>
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Каталог */}
@@ -50,18 +50,8 @@ function Footer() {
             <ul className="space-y-3">
               <li className="text-white font-medium">Москва</li>
               <li><a href="tel:+74954610110" className="hover:text-white transition-colors text-lg">+7 (495) 461-01-10</a></li>
-              <li className="pt-4">
-                <button className="bg-accent-600 text-white px-6 py-2.5 hover:bg-accent-700 transition-colors font-medium w-full">
-                  Заказать звонок
-                </button>
-              </li>
             </ul>
           </div>
-        </div>
-
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-500">
-          <p>© Теремъ, 2009 — 2025. Все материалы данного сайта являются объектами авторского права (в том числе дизайн).</p>
-          <p className="mt-2">Запрещается копирование, распространение или любое иное использование информации и объектов без предварительного согласия правообладателя.</p>
         </div>
       </div>
     </footer>
