@@ -4,14 +4,22 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/assets/(.*)",
+      "destination": "/assets/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/assets/(.*\\.css)",
       "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        },
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
@@ -19,7 +27,20 @@
       ]
     },
     {
-      "source": "/(.*\\.(js|css|ico|png|jpg|jpeg|svg|gif|webp|woff|woff2|ttf|eot))",
+      "source": "/assets/(.*\\.js)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(png|jpg|jpeg|svg|gif|webp|ico))",
       "headers": [
         {
           "key": "Cache-Control",

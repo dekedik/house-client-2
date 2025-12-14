@@ -10,7 +10,18 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    sourcemap: false
+    sourcemap: false,
+    cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name].[ext]',
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js'
+      }
+    }
   },
-  base: '/'
+  base: '/',
+  css: {
+    postcss: './postcss.config.js'
+  }
 })
