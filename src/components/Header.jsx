@@ -13,17 +13,36 @@ function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const imageElement = document.querySelector('img[src="/fon2-photoaidcom-darken.png"]');
-      if (imageElement) {
-        const imageBottom = imageElement.getBoundingClientRect().bottom;
-        setIsScrolledPastImage(imageBottom < 0);
+      try {
+        const imageElement = document.querySelector('img[src="/fon2-photoaidcom-darken.png"]');
+        if (imageElement) {
+          const imageBottom = imageElement.getBoundingClientRect().bottom;
+          setIsScrolledPastImage(imageBottom < 0);
+        }
+      } catch (error) {
+        // Игнорируем ошибки при проверке скролла
+        console.warn('Scroll handler error:', error);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Используем requestAnimationFrame для оптимизации
+    let ticking = false;
+    const optimizedScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', optimizedScroll, { passive: true });
     handleScroll(); // Проверяем начальное состояние
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', optimizedScroll);
+    };
   }, []);
 
   const logoSrc = isScrolledPastImage ? '/Lo(3).png' : '/Lo(1).png';
