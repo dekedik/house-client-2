@@ -5,42 +5,32 @@ function Footer() {
     <footer className="text-white w-full overflow-x-hidden" style={{ backgroundColor: '#4a0309' }}>
       <div className="max-w-7xl mx-auto px-4 py-12 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Каталог */}
+          {/* ДоманСтрой */}
           <div>
-            <h3 className="text-white font-bold mb-5 text-lg">Каталог</h3>
+            <h2 className="text-white font-bold mb-5 text-xl lg:text-2xl pl-2 sm:pl-3">ДоманСтрой</h2>
+            <img 
+              src="/Logobel.png" 
+              alt="ДоманСтрой" 
+              className="h-auto w-32 sm:w-40 md:w-48 object-contain"
+            />
+          </div>
+
+          {/* Каталог комплектаций */}
+          <div>
+            <h3 className="text-white font-bold mb-5 text-lg">Каталог комплектаций</h3>
             <ul className="space-y-3">
-              <li><Link to="/catalog?type=cottages" className="text-white hover:opacity-80 transition-opacity">Коттеджи</Link></li>
-              <li><Link to="/catalog?type=dachas" className="text-white hover:opacity-80 transition-opacity">Дачные дома</Link></li>
-              <li><Link to="/catalog?type=baths" className="text-white hover:opacity-80 transition-opacity">Бани</Link></li>
-              <li><Link to="/catalog?type=one-floor" className="text-white hover:opacity-80 transition-opacity">Одноэтажные дома</Link></li>
-              <li><Link to="/catalog?type=two-floor" className="text-white hover:opacity-80 transition-opacity">Двухэтажные дома</Link></li>
-              <li><Link to="/catalog?type=house-bath" className="text-white hover:opacity-80 transition-opacity">Дома-бани</Link></li>
+              <li><Link to="/package/start" className="text-white hover:opacity-80 transition-opacity">Старт</Link></li>
+              <li><Link to="/package/standard" className="text-white hover:opacity-80 transition-opacity">Стандарт</Link></li>
+              <li><Link to="/package/comfort" className="text-white hover:opacity-80 transition-opacity">Комфорт</Link></li>
+              <li><Link to="/package/premium" className="text-white hover:opacity-80 transition-opacity">Премиум</Link></li>
             </ul>
           </div>
 
-          {/* Услуги */}
+          {/* Компания */}
           <div>
-            <h3 className="text-white font-bold mb-5 text-lg">Услуги</h3>
+            <h3 className="text-white font-bold mb-5 text-lg">Компания</h3>
             <ul className="space-y-3">
-              <li><Link to="/services" className="text-white hover:opacity-80 transition-opacity">Индивидуальные проекты</Link></li>
-              <li><Link to="/services" className="text-white hover:opacity-80 transition-opacity">Достройка и реконструкция</Link></li>
-              <li><Link to="/services" className="text-white hover:opacity-80 transition-opacity">Инженерные коммуникации</Link></li>
-              <li><Link to="/services" className="text-white hover:opacity-80 transition-opacity">Кредитование</Link></li>
-              <li><Link to="/services" className="text-white hover:opacity-80 transition-opacity">Ипотека</Link></li>
-              <li><Link to="/services" className="text-white hover:opacity-80 transition-opacity">Страхование</Link></li>
-            </ul>
-          </div>
-
-          {/* Информация */}
-          <div>
-            <h3 className="text-white font-bold mb-5 text-lg">Информация</h3>
-            <ul className="space-y-3">
-              <li><Link to="/about" className="text-white hover:opacity-80 transition-opacity">О компании</Link></li>
-              <li><Link to="/about" className="text-white hover:opacity-80 transition-opacity">Производство</Link></li>
-              <li><Link to="/about" className="text-white hover:opacity-80 transition-opacity">Сроки строительства</Link></li>
-              <li><Link to="/about" className="text-white hover:opacity-80 transition-opacity">Гарантия</Link></li>
-              <li><Link to="/about" className="text-white hover:opacity-80 transition-opacity">Отзывы</Link></li>
-              <li><Link to="/about" className="text-white hover:opacity-80 transition-opacity">Часто задаваемые вопросы</Link></li>
+              <li><Link to="/about" className="text-white hover:opacity-80 transition-opacity">О нас</Link></li>
             </ul>
           </div>
 
@@ -48,8 +38,10 @@ function Footer() {
           <div>
             <h3 className="text-white font-bold mb-5 text-lg">Контакты</h3>
             <ul className="space-y-3">
-              <li className="text-white font-medium">Москва</li>
-              <li><a href="tel:+74954610110" className="text-white hover:opacity-80 transition-opacity text-lg">+7 (495) 461-01-10</a></li>
+              <li><a href="tel:+79185429777" className="text-white hover:opacity-80 transition-opacity">+7 (918) 542-97-77</a></li>
+              <li><a href="tel:+79508503306" className="text-white hover:opacity-80 transition-opacity">+7 (950) 850-33-06</a></li>
+              <li className="text-white">г. Ростов-на-Дону</li>
+              <li className="text-white">ул. Михаила Нагибина, д.38</li>
             </ul>
           </div>
         </div>

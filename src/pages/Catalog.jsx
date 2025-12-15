@@ -299,10 +299,13 @@ function Catalog() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#6a040f]">Каталог</h1>
           <Link 
             to="/"
-            className="text-[#6a040f] hover:opacity-80 transition-opacity text-3xl sm:text-4xl md:text-5xl font-bold"
+            className="text-[#6a040f] hover:opacity-80 transition-opacity text-base sm:text-lg md:text-xl font-medium inline-flex items-center"
             aria-label="Вернуться на главную"
           >
-            ←
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Назад
           </Link>
         </div>
 

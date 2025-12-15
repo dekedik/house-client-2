@@ -12,6 +12,14 @@
   html {
     overflow-x: hidden;
     width: 100%;
+    font-size: 100%;
+    /* Скрытие скроллбара */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE и Edge */
+  }
+
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 
   body {
@@ -21,12 +29,47 @@
     overflow-x: hidden;
     width: 100%;
     position: relative;
+    font-size: 100%;
+    /* Скрытие скроллбара */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE и Edge */
+  }
+
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 
   #root {
     width: 100%;
     overflow-x: hidden;
     position: relative;
+    font-size: 100%;
+    /* Скрытие скроллбара */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE и Edge */
+  }
+
+  #root::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  /* Предотвращение смещения элементов при изменении размера шрифта */
+  * {
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  /* Предотвращение смещения flex элементов */
+  .flex {
+    min-width: 0;
+  }
+
+  /* Предотвращение смещения текста */
+  p, h1, h2, h3, h4, h5, h6, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 }
 

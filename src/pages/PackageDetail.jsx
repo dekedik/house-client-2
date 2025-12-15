@@ -31,17 +31,31 @@ function PackageDetail() {
   const gallery = pkg.gallery || [pkg.image];
 
   return (
-    <div className="min-h-screen bg-white py-8 sm:py-12 md:py-16 w-full overflow-x-hidden">
+    <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-28 pb-8 sm:pb-12 md:pb-16 w-full overflow-x-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 w-full">
+        {/* Кнопка "Назад" для мобильной версии */}
         <Link 
           to="/"
-          className="inline-block text-[#6a040f] hover:opacity-80 transition-opacity mb-6 text-base sm:text-lg font-medium"
+          className="md:hidden inline-block text-[#6a040f] hover:opacity-80 transition-opacity mb-6 text-base sm:text-lg font-medium"
         >
           Назад
         </Link>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 text-gray-900 text-center">
-          Комплектация "{pkg.title}"
-        </h1>
+        {/* Заголовок с кнопкой "Назад" для десктопной версии */}
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 text-center md:text-left flex-1">
+            Комплектация "{pkg.title}"
+          </h1>
+          {/* Кнопка "Назад" для десктопной версии */}
+          <Link 
+            to="/"
+            className="hidden md:inline-flex items-center text-[#6a040f] hover:opacity-80 transition-opacity text-base font-medium ml-4"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Назад
+          </Link>
+        </div>
 
         {/* Галерея проектов */}
         <div className="mb-6 sm:mb-8">
@@ -84,6 +98,19 @@ function PackageDetail() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Кнопка "Назад" для мобильной версии над характеристиками */}
+        <div className="md:hidden mb-4">
+          <Link 
+            to="/"
+            className="inline-flex items-center text-[#6a040f] hover:opacity-80 transition-opacity text-base font-medium"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Назад
+          </Link>
         </div>
 
         <div className="bg-white border-2 border-gray-200 rounded-lg p-4 sm:p-6 md:p-8">

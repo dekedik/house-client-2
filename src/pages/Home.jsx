@@ -264,7 +264,7 @@ function Home() {
       {/* Каталог карточек */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white w-full overflow-x-hidden">
         <div className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full max-w-full">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-[#6a040f]">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-gray-900">
             Каталог комплектаций
           </h2>
           <div className="space-y-4 sm:space-y-6 ml-4 sm:ml-8 md:ml-12 lg:ml-16 xl:ml-20">
