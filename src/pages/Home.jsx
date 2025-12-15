@@ -163,8 +163,8 @@ function Home() {
             Индивидуальный подход к каждому клиенту!
           </p>
         </div>
-        {/* Кнопки слева внизу */}
-        <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex flex-col sm:flex-row gap-3 sm:gap-4 z-10" style={{ maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }}>
+        {/* Кнопки слева внизу - скрыты на мобильных */}
+        <div className="hidden md:flex absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex-col sm:flex-row gap-3 sm:gap-4 z-10" style={{ maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }}>
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Link
               to="/catalog"
@@ -263,11 +263,11 @@ function Home() {
 
       {/* Каталог карточек */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white w-full overflow-x-hidden">
-        <div className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full max-w-full">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-[#6a040f]">
             Каталог комплектаций
           </h2>
-          <div className="space-y-4 sm:space-y-6 ml-4 sm:ml-8 md:ml-12 lg:ml-16 xl:ml-20">
+          <div className="space-y-4 sm:space-y-6">
             {packages.map((pkg) => (
               <div 
                 key={pkg.id}
@@ -276,7 +276,7 @@ function Home() {
               >
                 <div className="flex flex-col md:flex-row">
                   {/* Текст слева */}
-                  <div className="w-full md:w-1/2 p-4 sm:p-6 flex flex-col justify-center">
+                  <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col justify-center">
                     <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 text-gray-900">
                       {pkg.title}
                     </h3>

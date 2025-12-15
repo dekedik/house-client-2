@@ -327,6 +327,15 @@ function Header() {
                 <button
                   onClick={() => {
                     setIsMenuOpen(false);
+                    setIsProjectFormOpen(true);
+                  }}
+                  className="block w-full text-left py-3 sm:py-4 text-gray-900 hover:text-[#6a040f] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
+                >
+                  Рассчитать проект
+                </button>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
                     setIsCallFormOpen(true);
                   }}
                   className="mt-6 sm:mt-8 bg-[#6a040f] text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg font-semibold text-lg sm:text-xl md:text-2xl hover:bg-[#5a030c] transition-colors duration-200 shadow-md w-fit"
