@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigationType } from 'react-router-dom';
 import CustomSelect from '../components/CustomSelect';
 import ProjectCard from '../components/ProjectCard';
 
@@ -18,6 +18,46 @@ function Catalog() {
   const [tempPriceTo, setTempPriceTo] = useState('');
   const [tempAreaFrom, setTempAreaFrom] = useState('');
   const [tempAreaTo, setTempAreaTo] = useState('');
+  const navigationType = useNavigationType();
+
+  // Сохраняем позицию скролла при уходе из каталога
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem('catalogScrollPosition', window.scrollY.toString());
+    };
+
+    // Сохраняем позицию при переходе на другую страницу
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        sessionStorage.setItem('catalogScrollPosition', window.scrollY.toString());
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // Восстанавливаем позицию скролла при возврате в каталог
+  useEffect(() => {
+    // Если это возврат назад (POP навигация), восстанавливаем позицию
+    if (navigationType === 'POP') {
+      const savedPosition = sessionStorage.getItem('catalogScrollPosition');
+      if (savedPosition) {
+        // Небольшая задержка для того, чтобы DOM успел отрендериться
+        setTimeout(() => {
+          window.scrollTo(0, parseInt(savedPosition, 10));
+        }, 0);
+      }
+    } else {
+      // Если это новый переход (PUSH), скроллим вверх
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [navigationType]);
 
   // Mock data для домов
   const houses = [
@@ -253,13 +293,13 @@ function Catalog() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-8 w-full overflow-x-hidden">
+    <div className="min-h-screen bg-white py-6 sm:py-8 md:py-12 w-full overflow-x-hidden">
       <div className="w-full max-w-full">
-        <div className="flex items-center justify-between mb-8 px-4 md:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-[#6a040f]">Каталог</h1>
+        <div className="flex items-center justify-between mb-6 sm:mb-8 px-4 sm:px-6 md:px-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#6a040f]">Каталог</h1>
           <Link 
             to="/"
-            className="text-[#6a040f] hover:opacity-80 transition-opacity text-4xl font-bold"
+            className="text-[#6a040f] hover:opacity-80 transition-opacity text-3xl sm:text-4xl md:text-5xl font-bold"
             aria-label="Вернуться на главную"
           >
             ←
@@ -267,21 +307,21 @@ function Catalog() {
         </div>
 
         {/* Горизонтальные фильтры */}
-        <div className="px-4 md:px-6 lg:px-8 mb-8">
-          <div className="bg-gray-50 py-6 w-full rounded-lg shadow-md">
-            <div className="px-4 md:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-[#6a040f]">Фильтры</h2>
-            <div className="flex items-center gap-4">
+        <div className="px-4 sm:px-6 md:px-8 mb-6 sm:mb-8">
+          <div className="bg-gray-50 py-4 sm:py-6 w-full rounded-lg shadow-md">
+            <div className="px-4 sm:px-6 md:px-8">
+          <div className="flex justify-between items-center mb-3 sm:mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#6a040f]">Фильтры</h2>
+            <div className="flex items-center gap-3 sm:gap-4">
               <button
                 onClick={handleOpenMoreFilters}
-                className="text-[#6a040f] font-medium hover:underline transition-colors"
+                className="text-[#6a040f] font-medium hover:underline transition-colors text-sm sm:text-base"
               >
                 Больше фильтров
               </button>
               <span
                 onClick={handleResetFilters}
-                className="text-[#6a040f] font-medium hover:underline transition-colors cursor-pointer"
+                className="text-[#6a040f] font-medium hover:underline transition-colors cursor-pointer text-sm sm:text-base"
               >
                 Сбросить
               </span>
@@ -343,21 +383,21 @@ function Catalog() {
               >
                 ✕
               </button>
-              <h3 className="text-2xl font-bold mb-6 text-gray-900">Больше фильтров</h3>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-gray-900">Больше фильтров</h3>
               
-              <div className="space-y-4 mb-6">
+              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                     Площадь дома (м²)
                   </label>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <input
                         type="number"
                         value={tempAreaFrom}
                         onChange={(e) => setTempAreaFrom(e.target.value)}
                         placeholder="От"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -366,23 +406,23 @@ function Catalog() {
                         value={tempAreaTo}
                         onChange={(e) => setTempAreaTo(e.target.value)}
                         placeholder="До"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                     Цена (₽)
                   </label>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <input
                         type="number"
                         value={tempPriceFrom}
                         onChange={(e) => setTempPriceFrom(e.target.value)}
                         placeholder="От"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -391,14 +431,14 @@ function Catalog() {
                         value={tempPriceTo}
                         onChange={(e) => setTempPriceTo(e.target.value)}
                         placeholder="До"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-3 sm:gap-4">
                 <button
                   onClick={() => {
                     setTempPriceFrom('');
@@ -406,19 +446,19 @@ function Catalog() {
                     setTempAreaFrom('');
                     setTempAreaTo('');
                   }}
-                  className="flex-1 border-2 border-gray-300 text-gray-700 px-4 py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium"
+                  className="flex-1 border-2 border-gray-300 text-gray-700 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium text-sm sm:text-base"
                 >
                   Сбросить
                 </button>
                 <button
                   onClick={handleCancelFilters}
-                  className="flex-1 border-2 border-gray-300 text-gray-700 px-4 py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium"
+                  className="flex-1 border-2 border-gray-300 text-gray-700 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium text-sm sm:text-base"
                 >
                   Отмена
                 </button>
                 <button
                   onClick={handleApplyFilters}
-                  className="flex-1 bg-[#6a040f] text-white px-4 py-3 rounded-lg hover:bg-[#5a030c] transition-colors font-medium"
+                  className="flex-1 bg-[#6a040f] text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-[#5a030c] transition-colors font-medium text-sm sm:text-base"
                 >
                   Применить
                 </button>
@@ -428,14 +468,14 @@ function Catalog() {
         )}
 
         {/* Карточки домов */}
-        <div className="px-4 md:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 md:px-8">
           {filteredHouses.length === 0 ? (
-            <div className="bg-gray-50 p-12 border border-gray-200 rounded-lg text-center">
-              <p className="text-xl text-gray-600">По вашему запросу ничего не найдено</p>
-              <p className="text-gray-500 mt-2">Попробуйте изменить параметры фильтра</p>
+            <div className="bg-gray-50 p-8 sm:p-12 border border-gray-200 rounded-lg text-center">
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-600">По вашему запросу ничего не найдено</p>
+              <p className="text-sm sm:text-base md:text-lg text-gray-500 mt-2">Попробуйте изменить параметры фильтра</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {filteredHouses.map((house) => (
                 <ProjectCard key={house.id} project={house} />
               ))}

@@ -358,14 +358,14 @@ function ProjectDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-8 w-full overflow-x-hidden">
-      <div className="px-4 md:px-6 lg:px-8 w-full max-w-full">
+    <div className="min-h-screen bg-white py-6 sm:py-8 md:py-12 w-full overflow-x-hidden">
+      <div className="px-4 sm:px-6 md:px-8 w-full max-w-full">
 
         {/* Основной контент: фото слева, информация справа */}
-        <div className="flex flex-col lg:flex-row gap-8 mb-12">
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Слайдер фото слева (75%) */}
           <div className="w-full lg:w-3/4 relative">
-            <div className="relative h-96 lg:h-[600px] overflow-hidden bg-gray-100 rounded-lg">
+            <div className="relative h-64 sm:h-80 md:h-96 lg:h-[30rem] xl:h-[37.5rem] overflow-hidden bg-gray-100 rounded-lg">
               {images.length > 0 && (
                 <>
                   <img
@@ -385,19 +385,19 @@ function ProjectDetail() {
                     <>
                       <button
                         onClick={handlePrevious}
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-opacity"
+                        className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 sm:p-3 rounded-full hover:bg-opacity-75 transition-opacity"
                         aria-label="Предыдущее изображение"
                       >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                         </svg>
                       </button>
                       <button
                         onClick={handleNext}
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-opacity"
+                        className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 sm:p-3 rounded-full hover:bg-opacity-75 transition-opacity"
                         aria-label="Следующее изображение"
                       >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </button>
@@ -406,14 +406,14 @@ function ProjectDetail() {
 
                   {/* Индикаторы (точки) */}
                   {images.length > 1 && (
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                    <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
                       {images.map((_, index) => (
                         <button
                           key={index}
                           onClick={() => setCurrentImageIndex(index)}
-                          className={`w-3 h-3 rounded-full transition-all ${
+                          className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all ${
                             index === currentImageIndex
-                              ? 'bg-white w-8'
+                              ? 'bg-white w-6 sm:w-8'
                               : 'bg-white bg-opacity-50'
                           }`}
                           aria-label={`Изображение ${index + 1}`}
@@ -427,14 +427,14 @@ function ProjectDetail() {
 
             {/* Миниатюры */}
             {images.length > 1 && (
-              <div className="grid grid-cols-4 gap-2 mt-4">
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-3 sm:mt-4">
                 {images.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`overflow-hidden rounded-lg h-20 ${
+                    className={`overflow-hidden rounded-lg h-16 sm:h-20 md:h-24 ${
                       index === currentImageIndex 
-                        ? 'ring-4 ring-[#6a040f]' 
+                        ? 'ring-2 sm:ring-4 ring-[#6a040f]' 
                         : 'opacity-75 hover:opacity-100'
                     }`}
                   >
@@ -457,53 +457,53 @@ function ProjectDetail() {
             {/* Кнопка назад */}
             <Link 
               to="/catalog"
-              className="inline-flex items-center text-[#6a040f] hover:opacity-80 mb-6 font-medium"
+              className="inline-flex items-center text-[#6a040f] hover:opacity-80 mb-4 sm:mb-6 font-medium text-sm sm:text-base"
             >
-              <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Назад
             </Link>
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">{project.name}</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">{project.name}</h1>
 
             {/* Цена от, Комнаты, Площадь */}
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
               {project.priceFrom && (
-                <div className="flex flex-col mb-6">
-                  <span className="text-base text-gray-600 mb-1">Цена от:</span>
-                  <span className="text-2xl font-bold text-gray-900">
+                <div className="flex flex-col mb-4 sm:mb-6">
+                  <span className="text-sm sm:text-base md:text-lg text-gray-600 mb-1">Цена от:</span>
+                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
                     {project.priceFrom}
                   </span>
                 </div>
               )}
 
               {project.rooms && (
-                <div className="flex flex-col mb-4">
-                  <span className="text-base text-gray-600 mb-1">Комнаты:</span>
-                  <span className="text-xl font-medium text-gray-900">{project.rooms}</span>
+                <div className="flex flex-col mb-3 sm:mb-4">
+                  <span className="text-sm sm:text-base md:text-lg text-gray-600 mb-1">Комнаты:</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-medium text-gray-900">{project.rooms}</span>
                 </div>
               )}
 
               {project.area && (
-                <div className="flex flex-col mb-4">
-                  <span className="text-base text-gray-600 mb-1">Площадь:</span>
-                  <span className="text-xl font-medium text-gray-900">{project.area}</span>
+                <div className="flex flex-col mb-3 sm:mb-4">
+                  <span className="text-sm sm:text-base md:text-lg text-gray-600 mb-1">Площадь:</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-medium text-gray-900">{project.area}</span>
                 </div>
               )}
             </div>
 
             {/* Кнопки */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
               <button
                 onClick={() => setIsCallFormOpen(true)}
-                className="w-full bg-[#6a040f] text-white px-6 py-4 text-lg hover:bg-[#5a030c] transition-colors font-medium rounded-lg"
+                className="w-full bg-[#6a040f] text-white px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#5a030c] transition-colors font-medium rounded-lg"
               >
                 Заказать звонок
               </button>
               <button
                 onClick={() => setIsMortgageCalculatorOpen(true)}
-                className="w-full border-2 border-[#6a040f] text-[#6a040f] px-6 py-4 text-lg hover:bg-[#6a040f] hover:text-white transition-colors font-medium rounded-lg"
+                className="w-full border-2 border-[#6a040f] text-[#6a040f] px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#6a040f] hover:text-white transition-colors font-medium rounded-lg"
               >
                 Рассчитать ипотеку
               </button>
@@ -512,15 +512,15 @@ function ProjectDetail() {
         </div>
 
         {/* Описание и характеристики */}
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Описание */}
           <div className="w-full lg:w-2/3">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Описание</h2>
-            <p className="text-gray-700 leading-relaxed mb-4 text-lg">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Описание</h2>
+            <p className="text-gray-700 leading-relaxed mb-3 sm:mb-4 text-base sm:text-lg md:text-xl">
               {project.description}
             </p>
             {project.fullDescription && (
-              <p className="text-gray-700 leading-relaxed text-lg">
+              <p className="text-gray-700 leading-relaxed text-base sm:text-lg md:text-xl">
                 {project.fullDescription}
               </p>
             )}
@@ -528,10 +528,10 @@ function ProjectDetail() {
 
           {/* Характеристики */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Характеристики</h2>
-            <ul className="space-y-3">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Характеристики</h2>
+            <ul className="space-y-2 sm:space-y-3">
               {project.characteristics?.map((char, index) => (
-                <li key={index} className="flex items-center text-gray-700 pb-3">
+                <li key={index} className="flex items-center text-gray-700 pb-2 sm:pb-3 text-sm sm:text-base md:text-lg">
                   <span className="font-medium">{char}</span>
                 </li>
               ))}
@@ -549,21 +549,21 @@ function ProjectDetail() {
               className="modal-content bg-white rounded-lg p-8 max-w-md w-full animate-fadeIn"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
                   Заказать звонок
                 </h2>
                 <button
                   onClick={() => setIsCallFormOpen(false)}
-                  className="text-gray-500 hover:text-gray-700 text-3xl"
+                  className="text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl"
                   aria-label="Закрыть"
                 >
                   ✕
                 </button>
               </div>
-              <form onSubmit={handleCallFormSubmit} className="space-y-4">
+              <form onSubmit={handleCallFormSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                  <label htmlFor="call-name" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="call-name" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                     Имя
                   </label>
                   <input
@@ -573,12 +573,12 @@ function ProjectDetail() {
                     value={callFormData.name}
                     onChange={handleCallFormChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                     placeholder="Введите ваше имя"
                   />
                 </div>
                 <div>
-                  <label htmlFor="call-phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="call-phone" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                     Телефон
                   </label>
                   <input
@@ -588,7 +588,7 @@ function ProjectDetail() {
                     value={callFormData.phone}
                     onChange={handleCallFormChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                     placeholder="Введите ваш телефон"
                   />
                 </div>
@@ -605,7 +605,7 @@ function ProjectDetail() {
                 />
                 <button
                   type="submit"
-                  className="w-full bg-[#6a040f] text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                  className="w-full bg-[#6a040f] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
                 >
                   Отправить
                 </button>
@@ -641,11 +641,11 @@ function ProjectDetail() {
               </div>
 
               {mortgageStep === 'calculator' ? (
-              <div className="flex flex-col lg:flex-row gap-8">
+              <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
                 {/* Левая часть - поля ввода */}
-                <div className="w-full lg:w-1/2 space-y-4">
+                <div className="w-full lg:w-1/2 space-y-3 sm:space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                       Стоимость недвижимости, ₽
                     </label>
                     <input
@@ -657,12 +657,12 @@ function ProjectDetail() {
                         setMortgageData({ ...mortgageData, propertyPrice: formatNumber(value) });
                       }}
                       placeholder="Введите стоимость"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm"
+                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                       Первоначальный взнос, ₽
                     </label>
                     <input
@@ -674,12 +674,12 @@ function ProjectDetail() {
                         setMortgageData({ ...mortgageData, initialPayment: formatNumber(value) });
                       }}
                       placeholder="Введите сумму взноса"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm"
+                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                       Срок кредита (лет)
                     </label>
                     <input
@@ -688,7 +688,7 @@ function ProjectDetail() {
                       value={mortgageData.loanTerm}
                       onChange={handleMortgageChange}
                       placeholder="Введите срок"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm mb-2"
+                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-2"
                     />
                     <div className="flex flex-wrap gap-2">
                       {[5, 10, 15, 20, 25, 30].map((term) => (
@@ -696,7 +696,7 @@ function ProjectDetail() {
                           key={term}
                           type="button"
                           onClick={() => setMortgageData({ ...mortgageData, loanTerm: term.toString() })}
-                          className={`px-3 py-1 text-sm rounded-lg border transition-colors ${
+                          className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg border transition-colors ${
                             mortgageData.loanTerm === term.toString()
                               ? 'bg-[#6a040f] text-white border-[#6a040f]'
                               : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
@@ -709,7 +709,7 @@ function ProjectDetail() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                       Процентная ставка (% годовых)
                     </label>
                     <input
@@ -718,7 +718,7 @@ function ProjectDetail() {
                       value={mortgageData.interestRate}
                       onChange={handleMortgageChange}
                       placeholder="Введите ставку"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm mb-2"
+                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-2"
                     />
                     <div className="flex flex-wrap gap-2">
                       {[7.5, 8, 8.5, 9, 9.5].map((rate) => (
@@ -726,7 +726,7 @@ function ProjectDetail() {
                           key={rate}
                           type="button"
                           onClick={() => setMortgageData({ ...mortgageData, interestRate: rate.toString() })}
-                          className={`px-3 py-1 text-sm rounded-lg border transition-colors ${
+                          className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg border transition-colors ${
                             mortgageData.interestRate === rate.toString()
                               ? 'bg-[#6a040f] text-white border-[#6a040f]'
                               : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
@@ -742,29 +742,29 @@ function ProjectDetail() {
 
                 {/* Правая часть - результаты */}
                 <div className="w-full lg:w-1/2">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Результаты расчета</h3>
-                  <div className="space-y-4">
-                    <div className="border-b border-gray-200 pb-3">
-                      <p className="text-sm text-gray-600 mb-1">Сумма кредита</p>
-                      <p className="text-lg font-bold text-gray-900">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Результаты расчета</h3>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="border-b border-gray-200 pb-2 sm:pb-3">
+                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Сумма кредита</p>
+                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
                         {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '—'}
                       </p>
                     </div>
-                    <div className="border-b border-gray-200 pb-3">
-                      <p className="text-sm text-gray-600 mb-1">Ежемесячный платеж</p>
-                      <p className="text-lg font-bold text-gray-900">
+                    <div className="border-b border-gray-200 pb-2 sm:pb-3">
+                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Ежемесячный платеж</p>
+                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
                         {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '—'}
                       </p>
                     </div>
-                    <div className="border-b border-gray-200 pb-3">
-                      <p className="text-sm text-gray-600 mb-1">Общая сумма выплат</p>
-                      <p className="text-lg font-bold text-gray-900">
+                    <div className="border-b border-gray-200 pb-2 sm:pb-3">
+                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Общая сумма выплат</p>
+                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
                         {mortgageResults.totalPayment > 0 ? formatNumber(mortgageResults.totalPayment) + ' ₽' : '—'}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Переплата</p>
-                      <p className="text-lg font-bold text-gray-900">
+                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Переплата</p>
+                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
                         {mortgageResults.overpayment > 0 ? formatNumber(mortgageResults.overpayment) + ' ₽' : '—'}
                       </p>
                     </div>
@@ -775,27 +775,27 @@ function ProjectDetail() {
                       calculateMortgage();
                       setMortgageStep('application');
                     }}
-                    className="w-full mt-6 bg-[#6a040f] text-white py-3 px-6 rounded-lg font-semibold text-base hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="w-full mt-4 sm:mt-6 bg-[#6a040f] text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Далее
                   </button>
                 </div>
               </div>
               ) : (
-              <form onSubmit={handleMortgageApplicationSubmit} className="space-y-6">
+              <form onSubmit={handleMortgageApplicationSubmit} className="space-y-4 sm:space-y-6">
                 {/* Результаты расчета */}
-                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Результаты расчета</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white p-4 rounded-lg border border-gray-300">
-                      <p className="text-sm text-gray-600 mb-1">Ежемесячный платеж</p>
-                      <p className="text-xl font-bold text-gray-900">
+                <div className="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200">
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Результаты расчета</h3>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-300">
+                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Ежемесячный платеж</p>
+                      <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
                         {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '—'}
                       </p>
                     </div>
-                    <div className="bg-white p-4 rounded-lg border border-gray-300">
-                      <p className="text-sm text-gray-600 mb-1">Сумма кредита</p>
-                      <p className="text-xl font-bold text-gray-900">
+                    <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-300">
+                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Сумма кредита</p>
+                      <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
                         {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '—'}
                       </p>
                     </div>
@@ -804,10 +804,10 @@ function ProjectDetail() {
 
                 {/* Контактные данные */}
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Ваши контактные данные</h3>
-                  <div className="space-y-4">
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Ваши контактные данные</h3>
+                  <div className="space-y-3 sm:space-y-4">
                     <div>
-                      <label htmlFor="mortgage-name" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="mortgage-name" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                         Ваше имя *
                       </label>
                       <input
@@ -817,12 +817,12 @@ function ProjectDetail() {
                         value={mortgageApplicationData.name}
                         onChange={handleMortgageApplicationChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                         placeholder="Введите ваше имя"
                       />
                     </div>
                     <div>
-                      <label htmlFor="mortgage-phone" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="mortgage-phone" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                         Номер телефона *
                       </label>
                       <input
@@ -832,7 +832,7 @@ function ProjectDetail() {
                         value={mortgageApplicationData.phone}
                         onChange={handleMortgageApplicationChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                         placeholder="Введите ваш телефон"
                       />
                     </div>
@@ -840,17 +840,17 @@ function ProjectDetail() {
                 </div>
 
                 {/* Кнопки */}
-                <div className="flex gap-4">
+                <div className="flex gap-3 sm:gap-4">
                   <button
                     type="button"
                     onClick={() => setMortgageStep('calculator')}
-                    className="flex-1 border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium"
+                    className="flex-1 border-2 border-gray-300 text-gray-700 px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium text-sm sm:text-base"
                   >
                     Назад
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-[#6a040f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="flex-1 bg-[#6a040f] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Отправить заявку
                   </button>
