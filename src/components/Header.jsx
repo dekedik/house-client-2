@@ -92,6 +92,18 @@ function Header() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleOpenMortgageCalculator = () => {
+      setIsMortgageCalculatorOpen(true);
+    };
+
+    window.addEventListener('openMortgageCalculator', handleOpenMortgageCalculator);
+
+    return () => {
+      window.removeEventListener('openMortgageCalculator', handleOpenMortgageCalculator);
+    };
+  }, []);
+
   const logoSrc = isScrolledPastImage ? '/Lo(3).png' : '/Lo(1).png';
   const linkColor = isScrolledPastImage ? 'text-[#6a040f]' : 'text-white';
   const linkStyle = isScrolledPastImage 
@@ -253,11 +265,47 @@ function Header() {
           </Link>
           
           <div className="flex items-center gap-3 sm:gap-4 md:gap-6 pr-2 sm:pr-4">
-            {/* Кнопка меню - видна на всех устройствах */}
+            {/* Навигационные ссылки для десктопа */}
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
+              <Link 
+                to="/catalog" 
+                className={`${linkColor} hover:opacity-80 transition-opacity font-medium text-base lg:text-lg`}
+                style={linkStyle}
+              >
+                Каталог
+              </Link>
+              <Link 
+                to="/about" 
+                className={`${linkColor} hover:opacity-80 transition-opacity font-medium text-base lg:text-lg`}
+                style={linkStyle}
+              >
+                О компании
+              </Link>
+              <Link 
+                to="/contacts" 
+                className={`${linkColor} hover:opacity-80 transition-opacity font-medium text-base lg:text-lg`}
+                style={linkStyle}
+              >
+                Контакты
+              </Link>
+              <button
+                onClick={() => setIsCallFormOpen(true)}
+                className={`hover:opacity-80 transition-opacity font-medium text-base lg:text-lg px-4 py-2 border-2 rounded-full ${
+                  isScrolledPastImage 
+                    ? 'bg-[#6a040f] text-white border-[#6a040f]' 
+                    : 'text-white border-white'
+                }`}
+                style={isScrolledPastImage ? {} : linkStyle}
+              >
+                Заказать звонок
+              </button>
+            </div>
+
+            {/* Кнопка меню - только для мобильных устройств */}
             {!isMenuOpen && (
               <button 
                 onClick={() => setIsMenuOpen(true)}
-                className={`${menuButtonColor} text-2xl sm:text-3xl md:text-4xl font-bold transition-colors relative z-[60]`}
+                className={`md:hidden ${menuButtonColor} text-2xl sm:text-3xl font-bold transition-colors relative z-[60]`}
                 style={menuButtonStyle}
                 aria-label="Меню"
               >

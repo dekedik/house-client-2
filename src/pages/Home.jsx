@@ -168,17 +168,26 @@ function Home() {
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Link
               to="/catalog"
-              className="bg-white px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 rounded-full font-semibold text-sm sm:text-base md:text-lg lg:text-xl transition-all duration-200 shadow-lg text-center backdrop-blur-sm text-[#6a040f]"
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg text-center backdrop-blur-sm text-[#6a040f]"
               style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
             >
               Каталог
             </Link>
             <button
               onClick={() => setIsFormOpen(true)}
-              className="bg-white px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 rounded-full font-semibold text-sm sm:text-base md:text-lg lg:text-xl transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f]"
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f]"
               style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
             >
               Рассчитать проект
+            </button>
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('openMortgageCalculator'));
+              }}
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f]"
+              style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
+            >
+              Рассчитать ипотеку
             </button>
           </div>
         </div>
@@ -264,7 +273,7 @@ function Home() {
       {/* Каталог карточек */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white w-full overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-[#6a040f]">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-gray-900">
             Каталог комплектаций
           </h2>
           <div className="space-y-4 sm:space-y-6">
