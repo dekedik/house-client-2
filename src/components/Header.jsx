@@ -1,15 +1,62 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import CustomSelect from './CustomSelect';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolledPastImage, setIsScrolledPastImage] = useState(false);
   const [isCallFormOpen, setIsCallFormOpen] = useState(false);
+  const [isMortgageCalculatorOpen, setIsMortgageCalculatorOpen] = useState(false);
+  const [mortgageStep, setMortgageStep] = useState('calculator');
   const [callFormData, setCallFormData] = useState({
     name: '',
     phone: '',
     reason: ''
   });
+  const [mortgageData, setMortgageData] = useState({
+    propertyPrice: '',
+    initialPayment: '',
+    loanTerm: '20',
+    interestRate: '10'
+  });
+  const [mortgageResults, setMortgageResults] = useState({
+    loanAmount: 0,
+    monthlyPayment: 0,
+    totalPayment: 0,
+    overpayment: 0
+  });
+  const [mortgageApplicationData, setMortgageApplicationData] = useState({
+    name: '',
+    phone: ''
+  });
+  const [isProjectFormOpen, setIsProjectFormOpen] = useState(false);
+  const [isProjectFormSubmitted, setIsProjectFormSubmitted] = useState(false);
+  const [projectFormData, setProjectFormData] = useState({
+    name: '',
+    phone: '',
+    object: ''
+  });
+
+  const objectTypes = [
+    { value: '', label: 'Выберите объект' },
+    { value: 'one-floor', label: 'Одноэтажный дом' },
+    { value: 'two-floor', label: 'Двухэтажный дом' },
+    { value: 'dacha', label: 'Дачный дом' },
+    { value: 'house-bath', label: 'Дом-Баня' },
+    { value: 'cottage', label: 'Коттедж' },
+  ];
+
+  useEffect(() => {
+    // Блокируем скролл при открытом меню
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,13 +93,14 @@ function Header() {
   }, []);
 
   const logoSrc = isScrolledPastImage ? '/Lo(3).png' : '/Lo(1).png';
-  // Если меню открыто, кнопка всегда белая
-  const menuButtonColor = isMenuOpen ? 'text-white' : (isScrolledPastImage ? '' : 'text-white');
-  const menuButtonStyle = isMenuOpen
-    ? { color: '#ffffff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }
-    : isScrolledPastImage 
-      ? { color: '#6a040f', textShadow: 'none' }
-      : { textShadow: '2px 2px 4px rgba(0,0,0,0.5)' };
+  const linkColor = isScrolledPastImage ? 'text-[#6a040f]' : 'text-white';
+  const linkStyle = isScrolledPastImage 
+    ? {} 
+    : { textShadow: '2px 2px 4px rgba(0,0,0,0.5)' };
+  const menuButtonColor = isScrolledPastImage ? 'text-[#6a040f]' : 'text-white';
+  const menuButtonStyle = isScrolledPastImage 
+    ? {} 
+    : { textShadow: '2px 2px 4px rgba(0,0,0,0.5)' };
 
   const handleCallFormSubmit = (e) => {
     e.preventDefault();
@@ -69,15 +117,98 @@ function Header() {
     });
   };
 
+  const handleMortgageChange = (e) => {
+    const { name, value } = e.target;
+    setMortgageData({
+      ...mortgageData,
+      [name]: value
+    });
+  };
+
+  const handleMortgageApplicationChange = (e) => {
+    setMortgageApplicationData({
+      ...mortgageApplicationData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const formatNumber = (num) => {
+    if (!num) return '';
+    const numStr = num.toString().replace(/\s/g, '');
+    return new Intl.NumberFormat('ru-RU').format(numStr);
+  };
+
+  const calculateMortgage = () => {
+    const price = parseFloat(mortgageData.propertyPrice.replace(/\s/g, '')) || 0;
+    const initial = parseFloat(mortgageData.initialPayment.replace(/\s/g, '')) || 0;
+    const term = parseFloat(mortgageData.loanTerm) || 20;
+    const rate = parseFloat(mortgageData.interestRate) || 10;
+    const MAX_LIMIT = 500000000;
+
+    if (price > 0 && initial >= 0 && price > initial) {
+      let loanAmount = price - initial;
+      
+      if (loanAmount > MAX_LIMIT) {
+        loanAmount = MAX_LIMIT;
+      }
+      
+      const monthlyRate = (rate / 100) / 12;
+      const numberOfPayments = term * 12;
+
+      let monthlyPayment = 0;
+      if (monthlyRate > 0) {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
+                       (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+      } else {
+        monthlyPayment = loanAmount / numberOfPayments;
+      }
+
+      const totalPayment = monthlyPayment * numberOfPayments;
+      const overpayment = totalPayment - loanAmount;
+
+      setMortgageResults({
+        loanAmount: Math.round(loanAmount),
+        monthlyPayment: Math.round(monthlyPayment),
+        totalPayment: Math.round(totalPayment),
+        overpayment: Math.round(overpayment)
+      });
+    } else {
+      setMortgageResults({
+        loanAmount: 0,
+        monthlyPayment: 0,
+        totalPayment: 0,
+        overpayment: 0
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isMortgageCalculatorOpen && mortgageData.propertyPrice) {
+      calculateMortgage();
+    }
+  }, [mortgageData, isMortgageCalculatorOpen]);
+
+  const handleMortgageApplicationSubmit = (e) => {
+    e.preventDefault();
+    console.log('Заявка на ипотеку отправлена:', {
+      ...mortgageApplicationData,
+      mortgageResults
+    });
+    alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
+    setMortgageApplicationData({ name: '', phone: '' });
+    setMortgageStep('calculator');
+    setIsMortgageCalculatorOpen(false);
+  };
+
   return (
     <header 
-      className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
-      style={{ backgroundColor: 'transparent' }}
+      className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300 w-full"
+      style={{ backgroundColor: 'transparent', maxWidth: '100vw', overflow: 'hidden' }}
     >
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="w-full max-w-full">
         {/* Main navigation */}
-        <nav className="flex items-center justify-between py-4">
-          <Link to="/" className="flex items-center">
+        <nav className="flex items-center justify-between py-4 w-full max-w-full">
+          <Link to="/" className="flex items-center pl-4">
             <img 
               src={logoSrc}
               alt="Теремъ" 
@@ -91,116 +222,111 @@ function Header() {
             />
           </Link>
           
-          <div className="flex items-center gap-4">
-            {/* Кнопка "Заказать звонок" - видна только на десктопе */}
-            <button 
-              onClick={() => setIsCallFormOpen(true)}
-              className="hidden md:block px-6 py-2.5 transition-colors font-medium rounded-full relative z-[60]"
-              style={isScrolledPastImage 
-                ? { 
-                    backgroundColor: '#6a040f',
-                    color: '#ffffff'
-                  }
-                : { 
-                    backgroundColor: '#ffffff',
-                    color: 'rgba(0, 0, 0, 0.6)'
-                  }
-              }
-              onMouseEnter={(e) => {
-                if (isScrolledPastImage) {
-                  e.target.style.backgroundColor = '#5a030c';
-                  e.target.style.color = '#ffffff';
-                } else {
-                  e.target.style.backgroundColor = '#f5f5f5';
-                  e.target.style.color = 'rgba(0, 0, 0, 0.8)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (isScrolledPastImage) {
-                  e.target.style.backgroundColor = '#6a040f';
-                  e.target.style.color = '#ffffff';
-                } else {
-                  e.target.style.backgroundColor = '#ffffff';
-                  e.target.style.color = 'rgba(0, 0, 0, 0.6)';
-                }
-              }}
-            >
-              Заказать звонок
-            </button>
-            
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`${menuButtonColor} text-3xl font-bold transition-colors relative z-[60]`}
-              style={menuButtonStyle}
-              aria-label="Меню"
-            >
-              {isMenuOpen ? '✕' : '☰'}
-            </button>
+          <div className="flex items-center gap-6 pr-4">
+            {/* Кнопка меню - видна на всех устройствах */}
+            {!isMenuOpen && (
+              <button 
+                onClick={() => setIsMenuOpen(true)}
+                className={`${menuButtonColor} text-3xl font-bold transition-colors relative z-[60]`}
+                style={menuButtonStyle}
+                aria-label="Меню"
+              >
+                ☰
+              </button>
+            )}
           </div>
 
-          <div 
-            className={`${isMenuOpen ? 'block' : 'hidden'} fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 z-[55]`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <div className="flex flex-col items-center justify-center h-full" onClick={(e) => e.stopPropagation()}>
-              <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <Link 
-              to="/catalog" 
-              className="block py-3 text-gray-700 hover:text-gray-900 font-medium text-lg border-b border-gray-100"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Каталог
-            </Link>
-            <Link 
-              to="/services" 
-              className="block py-3 text-gray-700 hover:text-gray-900 font-medium text-lg border-b border-gray-100"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Услуги
-            </Link>
-            <Link 
-              to="/about" 
-              className="block py-3 text-gray-700 hover:text-gray-900 font-medium text-lg border-b border-gray-100"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              О компании
-            </Link>
-            <Link 
-              to="/news" 
-              className="block py-3 text-gray-700 hover:text-gray-900 font-medium text-lg border-b border-gray-100 md:hidden"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Новости
-            </Link>
-            <Link 
-              to="/contacts" 
-              className="block py-3 text-gray-700 hover:text-gray-900 font-medium text-lg border-b border-gray-100 md:hidden"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Контакты
-            </Link>
-            {/* Кнопка "Заказать звонок" в мобильном меню */}
-            <button
-              onClick={() => {
-                setIsMenuOpen(false);
-                setIsCallFormOpen(true);
+          {/* Модальное окно меню */}
+          {isMenuOpen && (
+            <div 
+              className="modal-overlay bg-white z-[55] flex flex-col p-6"
+              style={{ 
+                position: 'fixed', 
+                top: 0, 
+                left: 0, 
+                right: 0, 
+                bottom: 0, 
+                width: '100%', 
+                height: '100%',
+                maxWidth: '100vw',
+                maxHeight: '100vh',
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch'
               }}
-              className="block md:hidden py-3 text-gray-700 hover:text-gray-900 font-medium text-lg border-b border-gray-100 text-left w-full"
             >
-              Заказать звонок
-            </button>
+              <div className="flex justify-end mb-8">
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-[#6a040f] text-4xl font-bold transition-colors hover:opacity-80"
+                  aria-label="Закрыть меню"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="flex flex-col space-y-6">
+                <Link 
+                  to="/catalog" 
+                  className="block py-4 text-gray-900 hover:text-[#6a040f] font-medium text-2xl transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Каталог
+                </Link>
+                <Link 
+                  to="/about" 
+                  className="block py-4 text-gray-900 hover:text-[#6a040f] font-medium text-2xl transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  О компании
+                </Link>
+                <Link 
+                  to="/contacts" 
+                  className="block py-4 text-gray-900 hover:text-[#6a040f] font-medium text-2xl transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Контакты
+                </Link>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsMortgageCalculatorOpen(true);
+                  }}
+                  className="block w-full text-left py-4 text-gray-900 hover:text-[#6a040f] font-medium text-2xl transition-colors"
+                >
+                  Рассчитать ипотеку
+                </button>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    // Небольшая задержка, чтобы меню успело закрыться
+                    setTimeout(() => {
+                      setIsProjectFormOpen(true);
+                    }, 100);
+                  }}
+                  className="block w-full text-left py-4 text-gray-900 hover:text-[#6a040f] font-medium text-2xl transition-colors"
+                >
+                  Рассчитать проект
+                </button>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsCallFormOpen(true);
+                  }}
+                  className="mt-8 bg-[#6a040f] text-white py-4 px-8 rounded-lg font-semibold text-xl hover:bg-[#5a030c] transition-colors duration-200 shadow-md w-fit"
+                >
+                  Заказать звонок
+                </button>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Модальное окно формы "Заказать звонок" */}
           {isCallFormOpen && (
             <div 
-              className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 z-[60] flex items-center justify-center p-4"
+              className="modal-overlay bg-black bg-opacity-50 z-[70] flex items-center justify-center p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
               onClick={() => setIsCallFormOpen(false)}
             >
               <div 
-                className="bg-white rounded-lg p-8 max-w-md w-full animate-fadeIn"
+                className="modal-content bg-white rounded-lg p-8 max-w-md w-full animate-fadeIn"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex justify-between items-center mb-6">
@@ -215,9 +341,6 @@ function Header() {
                     ✕
                   </button>
                 </div>
-                <p className="text-gray-600 mb-6">
-                  Укажите свое имя и номер телефона. Мы перезвоним и ответим на все вопросы.
-                </p>
                 <form onSubmit={handleCallFormSubmit} className="space-y-4">
                   <div>
                     <label htmlFor="call-name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -249,32 +372,17 @@ function Header() {
                       placeholder="Введите ваш телефон"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="call-reason" className="block text-sm font-medium text-gray-700 mb-2">
-                      Причина
-                    </label>
-                    <textarea
-                      id="call-reason"
-                      name="reason"
-                      value={callFormData.reason}
-                      onChange={handleCallFormChange}
-                      rows="4"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all resize-none"
-                      placeholder="Укажите причину обращения (необязательно)"
-                    />
-                  </div>
-                  <div className="flex items-start">
-                    <input
-                      type="checkbox"
-                      id="call-agreement"
-                      name="agreement"
-                      required
-                      className="mt-1 mr-2 h-4 w-4 text-[#6a040f] focus:ring-[#6a040f] border-gray-300 rounded"
-                    />
-                    <label htmlFor="call-agreement" className="text-sm text-gray-600">
-                      Я соглашаюсь с Политикой в отношении обработки персональных данных, а также на обработку персональных данных
-                    </label>
-                  </div>
+                  <CustomSelect
+                    value={callFormData.reason}
+                    onChange={(value) => setCallFormData({ ...callFormData, reason: value })}
+                    options={[
+                      { value: '', label: 'Выберите причину' },
+                      { value: 'Покупка', label: 'Покупка' },
+                      { value: 'Ипотека', label: 'Ипотека' },
+                      { value: 'Рассрочка', label: 'Рассрочка' }
+                    ]}
+                    label="Причина"
+                  />
                   <button
                     type="submit"
                     className="w-full bg-[#6a040f] text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
@@ -282,6 +390,336 @@ function Header() {
                     Отправить
                   </button>
                 </form>
+              </div>
+            </div>
+          )}
+
+          {/* Модальное окно калькулятора ипотеки */}
+          {isMortgageCalculatorOpen && (
+            <div 
+              className="modal-overlay bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+              onClick={() => {
+                setIsMortgageCalculatorOpen(false);
+                setMortgageStep('calculator');
+              }}
+            >
+              <div 
+                className="modal-content bg-white rounded-lg p-8 max-w-2xl w-full animate-fadeIn"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                    {mortgageStep === 'calculator' ? 'Калькулятор ипотеки' : 'Оставить заявку на ипотеку'}
+                  </h2>
+                  <button
+                    onClick={() => {
+                      setIsMortgageCalculatorOpen(false);
+                      setMortgageStep('calculator');
+                    }}
+                    className="text-gray-500 hover:text-gray-700 text-3xl"
+                    aria-label="Закрыть"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {mortgageStep === 'calculator' ? (
+                <div className="flex flex-col lg:flex-row gap-8">
+                  <div className="w-full lg:w-1/2 space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Стоимость недвижимости, ₽
+                      </label>
+                      <input
+                        type="text"
+                        name="propertyPrice"
+                        value={mortgageData.propertyPrice}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          setMortgageData({ ...mortgageData, propertyPrice: formatNumber(value) });
+                        }}
+                        placeholder="Введите стоимость"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Первоначальный взнос, ₽
+                      </label>
+                      <input
+                        type="text"
+                        name="initialPayment"
+                        value={mortgageData.initialPayment}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          setMortgageData({ ...mortgageData, initialPayment: formatNumber(value) });
+                        }}
+                        placeholder="Введите сумму взноса"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Срок кредита (лет)
+                      </label>
+                      <input
+                        type="text"
+                        name="loanTerm"
+                        value={mortgageData.loanTerm}
+                        onChange={handleMortgageChange}
+                        placeholder="Введите срок"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm mb-2"
+                      />
+                      <div className="flex flex-wrap gap-2">
+                        {[5, 10, 15, 20, 25, 30].map((term) => (
+                          <button
+                            key={term}
+                            type="button"
+                            onClick={() => setMortgageData({ ...mortgageData, loanTerm: term.toString() })}
+                            className={`px-3 py-1 text-sm rounded-lg border transition-colors ${
+                              mortgageData.loanTerm === term.toString()
+                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                            }`}
+                          >
+                            {term}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Процентная ставка (% годовых)
+                      </label>
+                      <input
+                        type="text"
+                        name="interestRate"
+                        value={mortgageData.interestRate}
+                        onChange={handleMortgageChange}
+                        placeholder="Введите ставку"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all text-sm mb-2"
+                      />
+                      <div className="flex flex-wrap gap-2">
+                        {[7.5, 8, 8.5, 9, 9.5].map((rate) => (
+                          <button
+                            key={rate}
+                            type="button"
+                            onClick={() => setMortgageData({ ...mortgageData, interestRate: rate.toString() })}
+                            className={`px-3 py-1 text-sm rounded-lg border transition-colors ${
+                              mortgageData.interestRate === rate.toString()
+                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                            }`}
+                          >
+                            {rate}%
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-1/2">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4">Результаты расчета</h3>
+                    <div className="space-y-4">
+                      <div className="border-b border-gray-200 pb-3">
+                        <p className="text-sm text-gray-600 mb-1">Сумма кредита</p>
+                        <p className="text-lg font-bold text-gray-900">
+                          {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '—'}
+                        </p>
+                      </div>
+                      <div className="border-b border-gray-200 pb-3">
+                        <p className="text-sm text-gray-600 mb-1">Ежемесячный платеж</p>
+                        <p className="text-lg font-bold text-gray-900">
+                          {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '—'}
+                        </p>
+                      </div>
+                      <div className="border-b border-gray-200 pb-3">
+                        <p className="text-sm text-gray-600 mb-1">Общая сумма выплат</p>
+                        <p className="text-lg font-bold text-gray-900">
+                          {mortgageResults.totalPayment > 0 ? formatNumber(mortgageResults.totalPayment) + ' ₽' : '—'}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Переплата</p>
+                        <p className="text-lg font-bold text-gray-900">
+                          {mortgageResults.overpayment > 0 ? formatNumber(mortgageResults.overpayment) + ' ₽' : '—'}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        calculateMortgage();
+                        setMortgageStep('application');
+                      }}
+                      className="w-full mt-6 bg-[#6a040f] text-white py-3 px-6 rounded-lg font-semibold text-base hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    >
+                      Далее
+                    </button>
+                  </div>
+                </div>
+                ) : (
+                <form onSubmit={handleMortgageApplicationSubmit} className="space-y-6">
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">Результаты расчета</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white p-4 rounded-lg border border-gray-300">
+                        <p className="text-sm text-gray-600 mb-1">Ежемесячный платеж</p>
+                        <p className="text-xl font-bold text-gray-900">
+                          {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '—'}
+                        </p>
+                      </div>
+                      <div className="bg-white p-4 rounded-lg border border-gray-300">
+                        <p className="text-sm text-gray-600 mb-1">Сумма кредита</p>
+                        <p className="text-xl font-bold text-gray-900">
+                          {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '—'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">Ваши контактные данные</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label htmlFor="mortgage-name-header" className="block text-sm font-medium text-gray-700 mb-2">
+                          Ваше имя *
+                        </label>
+                        <input
+                          type="text"
+                          id="mortgage-name-header"
+                          name="name"
+                          value={mortgageApplicationData.name}
+                          onChange={handleMortgageApplicationChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                          placeholder="Введите ваше имя"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="mortgage-phone-header" className="block text-sm font-medium text-gray-700 mb-2">
+                          Номер телефона *
+                        </label>
+                        <input
+                          type="tel"
+                          id="mortgage-phone-header"
+                          name="phone"
+                          value={mortgageApplicationData.phone}
+                          onChange={handleMortgageApplicationChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                          placeholder="Введите ваш телефон"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setMortgageStep('calculator')}
+                      className="flex-1 border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium"
+                    >
+                      Назад
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 bg-[#6a040f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    >
+                      Отправить заявку
+                    </button>
+                  </div>
+                </form>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Модальное окно формы "Рассчитать проект" */}
+          {isProjectFormOpen && (
+            <div 
+              className="modal-overlay bg-black bg-opacity-50 z-[70] flex items-center justify-center p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+              onClick={() => {
+                setIsProjectFormOpen(false);
+                setIsProjectFormSubmitted(false);
+              }}
+            >
+              <div 
+                className="modal-content bg-white rounded-lg p-8 max-w-2xl w-full animate-fadeIn"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                    {isProjectFormSubmitted ? 'Спасибо!' : 'Рассчитать проект'}
+                  </h2>
+                  <button
+                    onClick={() => {
+                      setIsProjectFormOpen(false);
+                      setIsProjectFormSubmitted(false);
+                    }}
+                    className="text-gray-500 hover:text-gray-700 text-3xl"
+                    aria-label="Закрыть"
+                  >
+                    ✕
+                  </button>
+                </div>
+                
+                {isProjectFormSubmitted ? (
+                  <div className="text-center py-12">
+                    <div className="mb-6">
+                      <svg className="w-20 h-20 mx-auto text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                      Спасибо за заявку!
+                    </p>
+                    <p className="text-lg text-gray-600">
+                      Мы с вами обязательно свяжемся!
+                    </p>
+                  </div>
+                ) : (
+                <form onSubmit={handleProjectFormSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="project-name" className="block text-sm font-medium text-gray-700 mb-2">
+                      Имя
+                    </label>
+                    <input
+                      type="text"
+                      id="project-name"
+                      name="name"
+                      value={projectFormData.name}
+                      onChange={handleProjectFormChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      placeholder="Введите ваше имя"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="project-phone" className="block text-sm font-medium text-gray-700 mb-2">
+                      Телефон
+                    </label>
+                    <input
+                      type="tel"
+                      id="project-phone"
+                      name="phone"
+                      value={projectFormData.phone}
+                      onChange={handleProjectFormChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      placeholder="Введите ваш телефон"
+                    />
+                  </div>
+                  <CustomSelect
+                    value={projectFormData.object}
+                    onChange={handleProjectObjectChange}
+                    options={objectTypes}
+                    label="Объект"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full bg-[#6a040f] text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                  >
+                    Отправить
+                  </button>
+                </form>
+                )}
               </div>
             </div>
           )}

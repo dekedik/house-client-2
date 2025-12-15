@@ -1,22 +1,38 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { packages } from '../data/packages';
+import CustomSelect from '../components/CustomSelect';
 
 function Home() {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
-    phone: ''
+    phone: '',
+    object: ''
   });
+
+  const objectTypes = [
+    { value: '', label: 'Выберите объект' },
+    { value: 'one-floor', label: 'Одноэтажный дом' },
+    { value: 'two-floor', label: 'Двухэтажный дом' },
+    { value: 'dacha', label: 'Дачный дом' },
+    { value: 'house-bath', label: 'Дом-Баня' },
+    { value: 'cottage', label: 'Коттедж' },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Здесь будет логика отправки формы
     console.log('Форма отправлена:', formData);
-    alert('Спасибо за заявку! Мы направим вам проект на указанную электронную почту.');
-    setFormData({ name: '', email: '', phone: '' });
-    setIsFormOpen(false);
+    setIsFormSubmitted(true);
+    setFormData({ name: '', phone: '', object: '' });
+    
+    // Закрываем модальное окно через 3 секунды
+    setTimeout(() => {
+      setIsFormOpen(false);
+      setIsFormSubmitted(false);
+    }, 3000);
   };
 
   const handleChange = (e) => {
@@ -26,25 +42,32 @@ function Home() {
     });
   };
 
+  const handleObjectChange = (value) => {
+    setFormData({
+      ...formData,
+      object: value
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-white">
-      <div className="w-full relative">
+    <div className="min-h-screen bg-white w-full overflow-x-hidden">
+      <div className="w-full relative max-w-full overflow-hidden">
         <img 
           src="/fon2-photoaidcom-darken.png" 
           alt="Фон" 
-          className="w-full h-auto object-cover mx-auto"
+          className="w-full h-auto object-cover mx-auto block max-w-full"
           style={{ display: 'block' }}
         />
-        <div className="absolute top-20 left-0 right-0 text-center">
-          <p className="text-white text-3xl md:text-5xl lg:text-7xl font-semibold" style={{ opacity: 0.7 }}>
+        <div className="absolute top-[5%] md:top-[10%] lg:top-[15%] left-0 right-0 text-center w-full px-4">
+          <p className="text-white text-3xl md:text-5xl lg:text-7xl font-semibold mb-8" style={{ opacity: 0.7 }}>
             Индивидуальный подход к каждому клиенту!
           </p>
         </div>
       </div>
 
       {/* Способы покупки */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-16 bg-white w-full overflow-x-hidden">
+        <div className="max-w-7xl mx-auto px-4 w-full">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
             Способы покупки
           </h2>
@@ -98,20 +121,31 @@ function Home() {
       </section>
 
       {/* Каталог карточек */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-16 bg-white w-full overflow-x-hidden">
+        <div className="px-6 md:px-12 lg:px-16 xl:px-20 w-full max-w-full">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
             Каталог комплектаций
           </h2>
-          <div className="space-y-6">
+          <div className="space-y-6 ml-8 md:ml-16 lg:ml-24">
             {packages.map((pkg) => (
-              <Link 
+              <div 
                 key={pkg.id}
-                to={`/package/${pkg.id}`}
-                className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all cursor-pointer block"
+                className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all"
               >
                 <div className="flex flex-col md:flex-row">
-                  {/* Изображение слева */}
+                  {/* Текст слева */}
+                  <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
+                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
+                      {pkg.title}
+                    </h3>
+                    <Link
+                      to={`/package/${pkg.id}`}
+                      className="w-fit bg-[#6a040f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#5a030c] transition-colors duration-200 inline-block"
+                    >
+                      Подробнее
+                    </Link>
+                  </div>
+                  {/* Изображение справа */}
                   <div className="w-full md:w-1/2 h-64 md:h-auto overflow-hidden bg-gray-100">
                     <img 
                       src={pkg.thumbnail} 
@@ -122,132 +156,10 @@ function Home() {
                       }}
                     />
                   </div>
-                  {/* Описание справа */}
-                  <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
-                      {pkg.title}
-                    </h3>
-                    <ul className="space-y-2">
-                      {pkg.features.slice(0, 3).map((feature, idx) => (
-                        <li key={idx} className="text-gray-700 text-sm md:text-base">
-                          • {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-4 text-[#6a040f] font-semibold">
-                      Подробнее →
-                    </p>
-                  </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Рассчитать проект */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <p className="text-2xl md:text-3xl font-semibold text-center mb-8 text-gray-900">
-            Если вы точно знаете, как должен выглядеть ваш дом, мы знаем, как его построить!
-          </p>
-          
-          <div className="text-center mb-8">
-            <button
-              onClick={() => setIsFormOpen(!isFormOpen)}
-              className="bg-[#6a040f] text-white py-4 px-8 rounded-lg font-semibold text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
-            >
-              Рассчитать проект
-            </button>
-          </div>
-
-          {isFormOpen && (
-            <div className="bg-white rounded-lg shadow-lg p-8 md:p-12 animate-fadeIn">
-              <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">
-                Рассчитать проект
-              </h2>
-              <p className="text-center text-gray-600 mb-8 text-lg">
-                Заполните заявку и мы направим вам проект на указанную электронную почту. 
-                Заявка носит информационный характер и ни к чему вас не обязывает.
-              </p>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Имя
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
-                    placeholder="Введите ваше имя"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    E-mail
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
-                    placeholder="Введите ваш e-mail"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                    Телефон
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
-                    placeholder="Введите ваш телефон"
-                  />
-                </div>
-                <div className="flex items-start">
-                  <input
-                    type="checkbox"
-                    id="agreement"
-                    name="agreement"
-                    required
-                    className="mt-1 mr-2 h-4 w-4 text-[#6a040f] focus:ring-[#6a040f] border-gray-300 rounded"
-                  />
-                  <label htmlFor="agreement" className="text-sm text-gray-600">
-                    Я соглашаюсь с Политикой в отношении обработки персональных данных, а также на обработку персональных данных
-                  </label>
-                </div>
-                <div className="flex items-start">
-                  <input
-                    type="checkbox"
-                    id="marketing"
-                    name="marketing"
-                    className="mt-1 mr-2 h-4 w-4 text-[#6a040f] focus:ring-[#6a040f] border-gray-300 rounded"
-                  />
-                  <label htmlFor="marketing" className="text-sm text-gray-600">
-                    Я соглашаюсь на получение рекламно-информационных сообщений
-                  </label>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-[#6a040f] text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
-                >
-                  Отправить
-                </button>
-              </form>
-            </div>
-          )}
         </div>
       </section>
 
@@ -319,6 +231,96 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Модальное окно формы "Рассчитать проект" */}
+      {isFormOpen && (
+        <div 
+          className="modal-overlay bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+          onClick={() => setIsFormOpen(false)}
+        >
+          <div 
+            className="modal-content bg-white rounded-lg p-8 max-w-2xl w-full animate-fadeIn"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {isFormSubmitted ? 'Спасибо!' : 'Рассчитать проект'}
+              </h2>
+              <button
+                onClick={() => {
+                  setIsFormOpen(false);
+                  setIsFormSubmitted(false);
+                }}
+                className="text-gray-500 hover:text-gray-700 text-3xl"
+                aria-label="Закрыть"
+              >
+                ✕
+              </button>
+            </div>
+            
+            {isFormSubmitted ? (
+              <div className="text-center py-12">
+                <div className="mb-6">
+                  <svg className="w-20 h-20 mx-auto text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                  Спасибо за заявку!
+                </p>
+                <p className="text-lg text-gray-600">
+                  Мы с вами обязательно свяжемся!
+                </p>
+              </div>
+            ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  Имя
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                  placeholder="Введите ваше имя"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  Телефон
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                  placeholder="Введите ваш телефон"
+                />
+              </div>
+              <CustomSelect
+                value={formData.object}
+                onChange={handleObjectChange}
+                options={objectTypes}
+                label="Объект"
+              />
+              <button
+                type="submit"
+                className="w-full bg-[#6a040f] text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+              >
+                Отправить
+              </button>
+            </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

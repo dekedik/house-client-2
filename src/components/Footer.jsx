@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="text-white" style={{ backgroundColor: '#6a040f' }}>
-      <div className="max-w-7xl mx-auto px-4 py-12">
+    <footer className="text-white w-full overflow-x-hidden" style={{ backgroundColor: '#4a0309' }}>
+      <div className="max-w-7xl mx-auto px-4 py-12 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Каталог */}
           <div>

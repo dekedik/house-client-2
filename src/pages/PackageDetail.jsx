@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { packages } from '../data/packages';
 
@@ -17,9 +17,9 @@ function PackageDetail() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Комплектация не найдена</h1>
-          <Link to="/" className="text-accent-600 hover:text-accent-700">
+          <a href="/" className="text-accent-600 hover:text-accent-700">
             Вернуться на главную
-          </Link>
+          </a>
         </div>
       </div>
     );
@@ -28,15 +28,8 @@ function PackageDetail() {
   const gallery = pkg.gallery || [pkg.image];
 
   return (
-    <div className="min-h-screen bg-white py-12">
-      <div className="max-w-6xl mx-auto px-4">
-        <Link 
-          to="/" 
-          className="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          ← Назад к каталогу
-        </Link>
-        
+    <div className="min-h-screen bg-white py-12 w-full overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 w-full">
         <h1 className="text-4xl md:text-5xl font-bold mb-8 text-gray-900 text-center">
           Комплектация "{pkg.title}"
         </h1>
