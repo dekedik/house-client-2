@@ -11,12 +11,12 @@ function About() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 w-full">
         <Link 
           to="/"
-          className="inline-block text-[#6a040f] hover:opacity-80 transition-opacity mb-6 text-base sm:text-lg font-medium"
+          className="inline-block text-[#540b0e] hover:opacity-80 transition-opacity mb-6 text-base sm:text-lg font-medium"
         >
           Назад
         </Link>
         
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#6a040f] mb-6 sm:mb-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#540b0e] mb-6 sm:mb-8">
           О компании
         </h1>
         
@@ -29,7 +29,7 @@ function About() {
 
         {/* Миссия */}
         <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#6a040f] mb-4 sm:mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#540b0e] mb-4 sm:mb-6">
             Наша миссия
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed">
@@ -39,14 +39,14 @@ function About() {
 
         {/* Почему выбирают нас */}
         <div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#6a040f] mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#540b0e] mb-6 sm:mb-8">
             Почему выбирают нас
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {/* Безопасная сделка */}
-            <div className="bg-white border-2 border-[#6a040f] rounded-lg p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#6a040f] mb-3 sm:mb-4">
+            <div className="bg-white border-2 border-[#540b0e] rounded-lg p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#540b0e] mb-3 sm:mb-4">
                 Безопасная сделка
               </h3>
               <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
@@ -55,8 +55,8 @@ function About() {
             </div>
 
             {/* Лучшие цены */}
-            <div className="bg-white border-2 border-[#6a040f] rounded-lg p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#6a040f] mb-3 sm:mb-4">
+            <div className="bg-white border-2 border-[#540b0e] rounded-lg p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#540b0e] mb-3 sm:mb-4">
                 Лучшие цены
               </h3>
               <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
@@ -65,8 +65,8 @@ function About() {
             </div>
 
             {/* Быстрое оформление */}
-            <div className="bg-white border-2 border-[#6a040f] rounded-lg p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#6a040f] mb-3 sm:mb-4">
+            <div className="bg-white border-2 border-[#540b0e] rounded-lg p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#540b0e] mb-3 sm:mb-4">
                 Быстрое оформление
               </h3>
               <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
@@ -75,8 +75,8 @@ function About() {
             </div>
 
             {/* Опытная команда */}
-            <div className="bg-white border-2 border-[#6a040f] rounded-lg p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#6a040f] mb-3 sm:mb-4">
+            <div className="bg-white border-2 border-[#540b0e] rounded-lg p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#540b0e] mb-3 sm:mb-4">
                 Опытная команда
               </h3>
               <p className="text-base sm:text-lg text-gray-700 leading-relaxed">

@@ -168,14 +168,14 @@ function Home() {
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Link
               to="/catalog"
-              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg text-center backdrop-blur-sm text-[#6a040f] whitespace-nowrap"
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg text-center backdrop-blur-sm text-[#540b0e] whitespace-nowrap"
               style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
             >
               Каталог
             </Link>
             <button
               onClick={() => setIsFormOpen(true)}
-              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f] whitespace-nowrap"
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#540b0e] whitespace-nowrap"
               style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
             >
               Рассчитать проект
@@ -184,7 +184,7 @@ function Home() {
               onClick={() => {
                 window.dispatchEvent(new CustomEvent('openMortgageCalculator'));
               }}
-              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f] whitespace-nowrap"
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#540b0e] whitespace-nowrap"
               style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
             >
               Рассчитать ипотеку
@@ -196,14 +196,14 @@ function Home() {
       {/* Способы покупки */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white w-full overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-gray-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-[#540b0e]">
             Способы покупки
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* Кредит на строительство - большая карточка */}
             <div className="md:col-span-1 bg-white border-2 border-gray-200 rounded-lg p-6 sm:p-8 hover:shadow-lg transition-all cursor-pointer text-center">
               <div className="mb-4 sm:mb-6">
-                <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-[#540b0e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -220,7 +220,7 @@ function Home() {
               {/* Ипотека - маленькая карточка */}
               <div className="bg-white border-2 border-gray-200 rounded-lg p-4 sm:p-6 hover:shadow-lg transition-all cursor-pointer text-center">
                 <div className="mb-3 sm:mb-4">
-                  <svg className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-[#540b0e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                 </div>
@@ -235,7 +235,7 @@ function Home() {
               {/* Строительство без предоплаты - маленькая карточка */}
               <div className="bg-white border-2 border-gray-200 rounded-lg p-4 sm:p-6 hover:shadow-lg transition-all cursor-pointer text-center">
                 <div className="mb-3 sm:mb-4">
-                  <svg className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-[#540b0e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
@@ -252,7 +252,7 @@ function Home() {
             <div className="md:col-span-3 bg-white border-2 border-gray-200 rounded-lg p-6 sm:p-8 hover:shadow-lg transition-all cursor-pointer">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-4 sm:gap-6">
                 <div className="flex-shrink-0">
-                  <svg className="w-12 h-12 sm:w-16 sm:h-16 text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-12 h-12 sm:w-16 sm:h-16 text-[#540b0e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
@@ -273,7 +273,7 @@ function Home() {
       {/* Каталог карточек */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white w-full overflow-x-hidden">
         <div className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 w-full max-w-full">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-[#6a040f]">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-[#540b0e]">
             Каталог комплектаций
           </h2>
           <div className="space-y-4 sm:space-y-6 ml-4 sm:ml-8 md:ml-12 lg:ml-16 xl:ml-20">
@@ -306,7 +306,7 @@ function Home() {
                         sessionStorage.setItem('selectedPackageId', pkg.id);
                         sessionStorage.setItem('fromPackageDetail', 'true');
                       }}
-                      className="w-fit bg-[#6a040f] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 inline-block"
+                      className="w-fit bg-[#540b0e] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#43090b] transition-colors duration-200 inline-block"
                     >
                       Подробнее
                     </Link>
@@ -427,7 +427,7 @@ function Home() {
             {isFormSubmitted ? (
               <div className="text-center py-8 sm:py-12">
                 <div className="mb-4 sm:mb-6">
-                  <svg className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-[#540b0e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
@@ -451,7 +451,7 @@ function Home() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                   placeholder="Введите ваше имя"
                 />
               </div>
@@ -466,7 +466,7 @@ function Home() {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                   placeholder="Введите ваш телефон"
                 />
               </div>
@@ -478,7 +478,7 @@ function Home() {
               />
               <button
                 type="submit"
-                className="w-full bg-[#6a040f] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                className="w-full bg-[#540b0e] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
               >
                 Отправить
               </button>

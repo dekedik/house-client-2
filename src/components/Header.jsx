@@ -116,11 +116,11 @@ function Header() {
   }, []);
 
   const logoSrc = isScrolledPastImage ? '/Lo(3).png' : '/Lo(1).png';
-  const linkColor = isScrolledPastImage ? 'text-[#6a040f]' : 'text-white';
+  const linkColor = isScrolledPastImage ? 'text-[#540b0e]' : 'text-white';
   const linkStyle = isScrolledPastImage 
     ? {} 
     : { textShadow: '0.125rem 0.125rem 0.25rem rgba(0,0,0,0.5)' };
-  const menuButtonColor = isScrolledPastImage ? 'text-[#6a040f]' : 'text-white';
+  const menuButtonColor = isScrolledPastImage ? 'text-[#540b0e]' : 'text-white';
   const menuButtonStyle = isScrolledPastImage 
     ? {} 
     : { textShadow: '0.125rem 0.125rem 0.25rem rgba(0,0,0,0.5)' };
@@ -303,7 +303,7 @@ function Header() {
                 onClick={() => setIsCallFormOpen(true)}
                 className={`hover:opacity-80 transition-opacity font-medium text-base lg:text-lg px-4 py-2 border-2 rounded-full ${
                   isScrolledPastImage 
-                    ? 'bg-[#6a040f] text-white border-[#6a040f]' 
+                    ? 'bg-[#540b0e] text-white border-[#540b0e]' 
                     : 'text-white border-white'
                 }`}
                 style={isScrolledPastImage ? {} : linkStyle}
@@ -346,7 +346,7 @@ function Header() {
               <div className="flex justify-end mb-6 sm:mb-8">
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-[#6a040f] text-3xl sm:text-4xl md:text-5xl font-bold transition-colors hover:opacity-80"
+                  className="text-[#540b0e] text-3xl sm:text-4xl md:text-5xl font-bold transition-colors hover:opacity-80"
                   aria-label="Закрыть меню"
                 >
                   ✕
@@ -355,21 +355,21 @@ function Header() {
               <div className="flex flex-col space-y-4 sm:space-y-6">
                 <Link 
                   to="/catalog" 
-                  className="block py-3 sm:py-4 text-gray-900 hover:text-[#6a040f] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
+                  className="block py-3 sm:py-4 text-gray-900 hover:text-[#540b0e] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Каталог
                 </Link>
                 <Link 
                   to="/about" 
-                  className="block py-3 sm:py-4 text-gray-900 hover:text-[#6a040f] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
+                  className="block py-3 sm:py-4 text-gray-900 hover:text-[#540b0e] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   О компании
                 </Link>
                 <Link 
                   to="/contacts" 
-                  className="block py-3 sm:py-4 text-gray-900 hover:text-[#6a040f] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
+                  className="block py-3 sm:py-4 text-gray-900 hover:text-[#540b0e] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Контакты
@@ -379,7 +379,7 @@ function Header() {
                     setIsMenuOpen(false);
                     setIsMortgageCalculatorOpen(true);
                   }}
-                  className="block w-full text-left py-3 sm:py-4 text-gray-900 hover:text-[#6a040f] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
+                  className="block w-full text-left py-3 sm:py-4 text-gray-900 hover:text-[#540b0e] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
                 >
                   Рассчитать ипотеку
                 </button>
@@ -388,7 +388,7 @@ function Header() {
                     setIsMenuOpen(false);
                     setIsProjectFormOpen(true);
                   }}
-                  className="block w-full text-left py-3 sm:py-4 text-gray-900 hover:text-[#6a040f] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
+                  className="block w-full text-left py-3 sm:py-4 text-gray-900 hover:text-[#540b0e] font-medium text-xl sm:text-2xl md:text-3xl transition-colors"
                 >
                   Рассчитать проект
                 </button>
@@ -397,7 +397,7 @@ function Header() {
                     setIsMenuOpen(false);
                     setIsCallFormOpen(true);
                   }}
-                  className="mt-6 sm:mt-8 bg-[#6a040f] text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg font-semibold text-lg sm:text-xl md:text-2xl hover:bg-[#5a030c] transition-colors duration-200 shadow-md w-fit"
+                  className="mt-6 sm:mt-8 bg-[#540b0e] text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg font-semibold text-lg sm:text-xl md:text-2xl hover:bg-[#43090b] transition-colors duration-200 shadow-md w-fit"
                 >
                   Заказать звонок
                 </button>
@@ -439,7 +439,7 @@ function Header() {
                       value={callFormData.name}
                       onChange={handleCallFormChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       placeholder="Введите ваше имя"
                     />
                   </div>
@@ -454,7 +454,7 @@ function Header() {
                       value={callFormData.phone}
                       onChange={handleCallFormChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       placeholder="Введите ваш телефон"
                     />
                   </div>
@@ -471,7 +471,7 @@ function Header() {
                   />
                   <button
                     type="submit"
-                    className="w-full bg-[#6a040f] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="w-full bg-[#540b0e] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Отправить
                   </button>
@@ -527,7 +527,7 @@ function Header() {
                           setMortgageData({ ...mortgageData, propertyPrice: formatNumber(value) });
                         }}
                         placeholder="Введите стоимость"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -543,7 +543,7 @@ function Header() {
                           setMortgageData({ ...mortgageData, initialPayment: formatNumber(value) });
                         }}
                         placeholder="Введите сумму взноса"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -556,7 +556,7 @@ function Header() {
                         value={mortgageData.loanTerm}
                         onChange={handleMortgageChange}
                         placeholder="Введите срок"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
                       />
                       <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {[5, 10, 15, 20, 25, 30].map((term) => (
@@ -566,8 +566,8 @@ function Header() {
                             onClick={() => setMortgageData({ ...mortgageData, loanTerm: term.toString() })}
                             className={`px-2 sm:px-3 py-1 text-xs rounded-lg border transition-colors ${
                               mortgageData.loanTerm === term.toString()
-                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
-                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                                ? 'bg-[#540b0e] text-white border-[#540b0e]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#540b0e]'
                             }`}
                           >
                             {term}
@@ -585,7 +585,7 @@ function Header() {
                         value={mortgageData.interestRate}
                         onChange={handleMortgageChange}
                         placeholder="Введите ставку"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
                       />
                       <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {[7.5, 8, 8.5, 9, 9.5].map((rate) => (
@@ -595,8 +595,8 @@ function Header() {
                             onClick={() => setMortgageData({ ...mortgageData, interestRate: rate.toString() })}
                             className={`px-2 sm:px-3 py-1 text-xs rounded-lg border transition-colors ${
                               mortgageData.interestRate === rate.toString()
-                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
-                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                                ? 'bg-[#540b0e] text-white border-[#540b0e]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#540b0e]'
                             }`}
                           >
                             {rate}%
@@ -642,7 +642,7 @@ function Header() {
                         calculateMortgage();
                         setMortgageStep('application');
                       }}
-                      className="w-full mt-2 sm:mt-4 md:mt-6 bg-[#6a040f] text-white py-1.5 sm:py-2 md:py-3 px-3 sm:px-4 md:px-6 rounded-lg font-semibold text-xs sm:text-sm md:text-base lg:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                      className="w-full mt-2 sm:mt-4 md:mt-6 bg-[#540b0e] text-white py-1.5 sm:py-2 md:py-3 px-3 sm:px-4 md:px-6 rounded-lg font-semibold text-xs sm:text-sm md:text-base lg:text-lg hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
                     >
                       Далее
                     </button>
@@ -681,7 +681,7 @@ function Header() {
                           value={mortgageApplicationData.name}
                           onChange={handleMortgageApplicationChange}
                           required
-                          className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                          className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                           placeholder="Введите ваше имя"
                         />
                       </div>
@@ -696,7 +696,7 @@ function Header() {
                           value={mortgageApplicationData.phone}
                           onChange={handleMortgageApplicationChange}
                           required
-                          className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                          className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                           placeholder="Введите ваш телефон"
                         />
                       </div>
@@ -712,7 +712,7 @@ function Header() {
                     </button>
                     <button
                       type="submit"
-                      className="flex-1 bg-[#6a040f] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                      className="flex-1 bg-[#540b0e] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
                     >
                       Отправить заявку
                     </button>
@@ -755,7 +755,7 @@ function Header() {
                 {isProjectFormSubmitted ? (
                   <div className="text-center py-8 sm:py-12">
                     <div className="mb-4 sm:mb-6">
-                      <svg className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-[#6a040f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-[#540b0e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
@@ -779,7 +779,7 @@ function Header() {
                       value={projectFormData.name}
                       onChange={handleProjectFormChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       placeholder="Введите ваше имя"
                     />
                   </div>
@@ -794,7 +794,7 @@ function Header() {
                       value={projectFormData.phone}
                       onChange={handleProjectFormChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       placeholder="Введите ваш телефон"
                     />
                   </div>
@@ -806,7 +806,7 @@ function Header() {
                   />
                   <button
                     type="submit"
-                    className="w-full bg-[#6a040f] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="w-full bg-[#540b0e] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Отправить
                   </button>

@@ -36,7 +36,7 @@ function PackageDetail() {
         {/* Кнопка "Назад" для мобильной версии */}
         <Link 
           to="/"
-          className="md:hidden inline-block text-[#6a040f] hover:opacity-80 transition-opacity mb-6 text-base sm:text-lg font-medium"
+          className="md:hidden inline-block text-[#540b0e] hover:opacity-80 transition-opacity mb-6 text-base sm:text-lg font-medium"
         >
           Назад
         </Link>
@@ -48,7 +48,7 @@ function PackageDetail() {
           {/* Кнопка "Назад" для десктопной версии */}
           <Link 
             to="/"
-            className="hidden md:inline-flex items-center text-[#6a040f] hover:opacity-80 transition-opacity text-base font-medium ml-4"
+            className="hidden md:inline-flex items-center text-[#540b0e] hover:opacity-80 transition-opacity text-base font-medium ml-4"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -83,7 +83,7 @@ function PackageDetail() {
                 onClick={() => setSelectedImage(idx)}
                 className={`overflow-hidden rounded-lg bg-gray-100 h-24 sm:h-28 md:h-32 lg:h-36 transition-all ${
                   selectedImage === idx 
-                    ? 'ring-2 sm:ring-4 ring-[#6a040f] scale-105' 
+                    ? 'ring-2 sm:ring-4 ring-[#540b0e] scale-105' 
                     : 'hover:opacity-80'
                 }`}
               >
@@ -104,7 +104,7 @@ function PackageDetail() {
         <div className="md:hidden mb-4">
           <Link 
             to="/"
-            className="inline-flex items-center text-[#6a040f] hover:opacity-80 transition-opacity text-base font-medium"
+            className="inline-flex items-center text-[#540b0e] hover:opacity-80 transition-opacity text-base font-medium"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

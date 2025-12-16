@@ -349,7 +349,7 @@ function ProjectDetail() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Проект не найден</h1>
-          <Link to="/catalog" className="text-[#6a040f] hover:opacity-80">
+          <Link to="/catalog" className="text-[#540b0e] hover:opacity-80">
             Вернуться в каталог
           </Link>
         </div>
@@ -434,7 +434,7 @@ function ProjectDetail() {
                     onClick={() => setCurrentImageIndex(index)}
                     className={`overflow-hidden rounded-lg h-16 sm:h-20 md:h-24 ${
                       index === currentImageIndex 
-                        ? 'ring-2 sm:ring-4 ring-[#6a040f]' 
+                        ? 'ring-2 sm:ring-4 ring-[#540b0e]' 
                         : 'opacity-75 hover:opacity-100'
                     }`}
                   >
@@ -457,7 +457,7 @@ function ProjectDetail() {
             {/* Кнопка назад */}
             <Link 
               to="/catalog"
-              className="inline-flex items-center text-[#6a040f] hover:opacity-80 mb-4 sm:mb-6 font-medium text-sm sm:text-base"
+              className="inline-flex items-center text-[#540b0e] hover:opacity-80 mb-4 sm:mb-6 font-medium text-sm sm:text-base"
             >
               <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -497,13 +497,13 @@ function ProjectDetail() {
             <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
               <button
                 onClick={() => setIsCallFormOpen(true)}
-                className="w-full bg-[#6a040f] text-white px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#5a030c] transition-colors font-medium rounded-lg"
+                className="w-full bg-[#540b0e] text-white px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#43090b] transition-colors font-medium rounded-lg"
               >
                 Заказать звонок
               </button>
               <button
                 onClick={() => setIsMortgageCalculatorOpen(true)}
-                className="w-full border-2 border-[#6a040f] text-[#6a040f] px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#6a040f] hover:text-white transition-colors font-medium rounded-lg"
+                className="w-full border-2 border-[#540b0e] text-[#540b0e] px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#540b0e] hover:text-white transition-colors font-medium rounded-lg"
               >
                 Рассчитать ипотеку
               </button>
@@ -573,7 +573,7 @@ function ProjectDetail() {
                     value={callFormData.name}
                     onChange={handleCallFormChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                     placeholder="Введите ваше имя"
                   />
                 </div>
@@ -588,7 +588,7 @@ function ProjectDetail() {
                     value={callFormData.phone}
                     onChange={handleCallFormChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                     placeholder="Введите ваш телефон"
                   />
                 </div>
@@ -605,7 +605,7 @@ function ProjectDetail() {
                 />
                 <button
                   type="submit"
-                  className="w-full bg-[#6a040f] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                  className="w-full bg-[#540b0e] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
                 >
                   Отправить
                 </button>
@@ -658,7 +658,7 @@ function ProjectDetail() {
                           setMortgageData({ ...mortgageData, propertyPrice: formatNumber(value) });
                         }}
                         placeholder="Введите стоимость"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -674,7 +674,7 @@ function ProjectDetail() {
                           setMortgageData({ ...mortgageData, initialPayment: formatNumber(value) });
                         }}
                         placeholder="Введите сумму взноса"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -687,7 +687,7 @@ function ProjectDetail() {
                         value={mortgageData.loanTerm}
                         onChange={handleMortgageChange}
                         placeholder="Введите срок"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
                       />
                       <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {[5, 10, 15, 20, 25, 30].map((term) => (
@@ -697,8 +697,8 @@ function ProjectDetail() {
                             onClick={() => setMortgageData({ ...mortgageData, loanTerm: term.toString() })}
                             className={`px-2 sm:px-3 py-1 text-xs rounded-lg border transition-colors ${
                               mortgageData.loanTerm === term.toString()
-                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
-                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                                ? 'bg-[#540b0e] text-white border-[#540b0e]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#540b0e]'
                             }`}
                           >
                             {term}
@@ -716,7 +716,7 @@ function ProjectDetail() {
                         value={mortgageData.interestRate}
                         onChange={handleMortgageChange}
                         placeholder="Введите ставку"
-                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
                       />
                       <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {[7.5, 8, 8.5, 9, 9.5].map((rate) => (
@@ -726,8 +726,8 @@ function ProjectDetail() {
                             onClick={() => setMortgageData({ ...mortgageData, interestRate: rate.toString() })}
                             className={`px-2 sm:px-3 py-1 text-xs rounded-lg border transition-colors ${
                               mortgageData.interestRate === rate.toString()
-                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
-                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                                ? 'bg-[#540b0e] text-white border-[#540b0e]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#540b0e]'
                             }`}
                           >
                             {rate}%
@@ -770,7 +770,7 @@ function ProjectDetail() {
                       calculateMortgage();
                       setMortgageStep('application');
                     }}
-                    className="w-full mt-2 sm:mt-4 md:mt-6 bg-[#6a040f] text-white py-1.5 sm:py-2 md:py-3 px-3 sm:px-4 md:px-6 rounded-lg font-semibold text-xs sm:text-sm md:text-base lg:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="w-full mt-2 sm:mt-4 md:mt-6 bg-[#540b0e] text-white py-1.5 sm:py-2 md:py-3 px-3 sm:px-4 md:px-6 rounded-lg font-semibold text-xs sm:text-sm md:text-base lg:text-lg hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Далее
                   </button>
@@ -809,7 +809,7 @@ function ProjectDetail() {
                         value={mortgageApplicationData.name}
                         onChange={handleMortgageApplicationChange}
                         required
-                        className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                         placeholder="Введите ваше имя"
                       />
                     </div>
@@ -824,7 +824,7 @@ function ProjectDetail() {
                         value={mortgageApplicationData.phone}
                         onChange={handleMortgageApplicationChange}
                         required
-                        className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                         placeholder="Введите ваш телефон"
                       />
                     </div>
@@ -840,7 +840,7 @@ function ProjectDetail() {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-[#6a040f] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="flex-1 bg-[#540b0e] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base hover:bg-[#43090b] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Отправить заявку
                   </button>

@@ -296,10 +296,10 @@ function Catalog() {
     <div className="min-h-screen bg-white py-6 sm:py-8 md:py-12 w-full overflow-x-hidden">
       <div className="w-full max-w-full">
         <div className="flex items-center justify-between mb-6 sm:mb-8 px-4 sm:px-6 md:px-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#6a040f]">Каталог</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#540b0e]">Каталог</h1>
           <Link 
             to="/"
-            className="text-[#6a040f] hover:opacity-80 transition-opacity text-base sm:text-lg md:text-xl font-medium inline-flex items-center"
+            className="text-[#540b0e] hover:opacity-80 transition-opacity text-base sm:text-lg md:text-xl font-medium inline-flex items-center"
             aria-label="Вернуться на главную"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -314,17 +314,17 @@ function Catalog() {
           <div className="bg-gray-50 py-4 sm:py-6 w-full rounded-lg shadow-md">
             <div className="px-4 sm:px-6 md:px-8">
           <div className="flex justify-between items-center mb-3 sm:mb-4">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#6a040f]">Фильтры</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#540b0e]">Фильтры</h2>
             <div className="flex items-center gap-3 sm:gap-4">
               <button
                 onClick={handleOpenMoreFilters}
-                className="text-[#6a040f] font-medium hover:underline transition-colors text-sm sm:text-base"
+                className="text-[#540b0e] font-medium hover:underline transition-colors text-sm sm:text-base"
               >
                 Больше фильтров
               </button>
               <span
                 onClick={handleResetFilters}
-                className="text-[#6a040f] font-medium hover:underline transition-colors cursor-pointer text-sm sm:text-base"
+                className="text-[#540b0e] font-medium hover:underline transition-colors cursor-pointer text-sm sm:text-base"
               >
                 Сбросить
               </span>
@@ -381,7 +381,7 @@ function Catalog() {
             >
               <button
                 onClick={() => setShowMoreFilters(false)}
-                className="absolute top-4 right-4 text-[#6a040f] text-3xl font-bold hover:opacity-80 transition-opacity"
+                className="absolute top-4 right-4 text-[#540b0e] text-3xl font-bold hover:opacity-80 transition-opacity"
                 aria-label="Закрыть"
               >
                 ✕
@@ -400,7 +400,7 @@ function Catalog() {
                         value={tempAreaFrom}
                         onChange={(e) => setTempAreaFrom(e.target.value)}
                         placeholder="От"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -409,7 +409,7 @@ function Catalog() {
                         value={tempAreaTo}
                         onChange={(e) => setTempAreaTo(e.target.value)}
                         placeholder="До"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -425,7 +425,7 @@ function Catalog() {
                         value={tempPriceFrom}
                         onChange={(e) => setTempPriceFrom(e.target.value)}
                         placeholder="От"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -434,7 +434,7 @@ function Catalog() {
                         value={tempPriceTo}
                         onChange={(e) => setTempPriceTo(e.target.value)}
                         placeholder="До"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -461,7 +461,7 @@ function Catalog() {
                 </button>
                 <button
                   onClick={handleApplyFilters}
-                  className="flex-1 bg-[#6a040f] text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-[#5a030c] transition-colors font-medium text-sm sm:text-base"
+                  className="flex-1 bg-[#540b0e] text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-[#43090b] transition-colors font-medium text-sm sm:text-base"
                 >
                   Применить
                 </button>
