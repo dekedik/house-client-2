@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col w-full overflow-x-hidden">
-      {!isCatalogPage && !isProjectDetailPage && !isContactsPage && !isAboutPage && <Header />}
+      {!isCatalogPage && !isContactsPage && !isAboutPage && <Header />}
       <main className="flex-grow w-full overflow-x-hidden">
         <Routes>
           <Route path="/" element={<Home />} />

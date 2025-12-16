@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
 import CustomSelect from './CustomSelect';
 
 function Header() {
+  const location = useLocation();
+  const isProjectDetailPage = location.pathname.startsWith('/project/');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolledPastImage, setIsScrolledPastImage] = useState(false);
+  const [isScrolledPastImage, setIsScrolledPastImage] = useState(isProjectDetailPage);
   const [isCallFormOpen, setIsCallFormOpen] = useState(false);
   const [isMortgageCalculatorOpen, setIsMortgageCalculatorOpen] = useState(false);
   const [mortgageStep, setMortgageStep] = useState('calculator');
@@ -59,12 +61,21 @@ function Header() {
   }, [isMenuOpen]);
 
   useEffect(() => {
+    // На странице ProjectDetail хедер всегда белый
+    if (isProjectDetailPage) {
+      setIsScrolledPastImage(true);
+      return;
+    }
+
     const handleScroll = () => {
       try {
         const imageElement = document.querySelector('img[src="/fon2-photoaidcom-darken.png"]');
         if (imageElement) {
           const imageBottom = imageElement.getBoundingClientRect().bottom;
           setIsScrolledPastImage(imageBottom < 0);
+        } else {
+          // Если изображения нет, хедер белый
+          setIsScrolledPastImage(true);
         }
       } catch (error) {
         // Игнорируем ошибки при проверке скролла
@@ -90,7 +101,7 @@ function Header() {
     return () => {
       window.removeEventListener('scroll', optimizedScroll);
     };
-  }, []);
+  }, [isProjectDetailPage, location.pathname]);
 
   useEffect(() => {
     const handleOpenMortgageCalculator = () => {

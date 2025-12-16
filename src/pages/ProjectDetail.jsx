@@ -358,7 +358,7 @@ function ProjectDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-6 sm:py-8 md:py-12 w-full overflow-x-hidden">
+    <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-28 pb-6 sm:pb-8 md:pb-12 w-full overflow-x-hidden">
       <div className="px-4 sm:px-6 md:px-8 w-full max-w-full">
 
         {/* Основной контент: фото слева, информация справа */}
@@ -617,15 +617,15 @@ function ProjectDetail() {
         {/* Модальное окно калькулятора ипотеки */}
         {isMortgageCalculatorOpen && (
           <div 
-            className="modal-overlay bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4 overflow-y-auto"
+            className="modal-overlay bg-black bg-opacity-50 z-[60] flex items-center justify-center p-2 sm:p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
             onClick={() => setIsMortgageCalculatorOpen(false)}
           >
             <div 
-              className="modal-content bg-white rounded-lg p-8 max-w-2xl w-full animate-fadeIn"
+              className="modal-content bg-white rounded-lg p-3 sm:p-6 md:p-8 max-w-2xl w-full animate-fadeIn max-h-[95vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <div className="flex justify-between items-center mb-2 sm:mb-4 md:mb-6">
+                <h2 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 pr-2">
                   {mortgageStep === 'calculator' ? 'Калькулятор ипотеки' : 'Оставить заявку на ипотеку'}
                 </h2>
                 <button
@@ -633,7 +633,7 @@ function ProjectDetail() {
                     setIsMortgageCalculatorOpen(false);
                     setMortgageStep('calculator');
                   }}
-                  className="text-gray-500 hover:text-gray-700 text-3xl"
+                  className="text-gray-500 hover:text-gray-700 text-xl sm:text-2xl md:text-3xl flex-shrink-0"
                   aria-label="Закрыть"
                 >
                   ✕
@@ -641,173 +641,165 @@ function ProjectDetail() {
               </div>
 
               {mortgageStep === 'calculator' ? (
-              <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
-                {/* Левая часть - поля ввода */}
-                <div className="w-full lg:w-1/2 space-y-3 sm:space-y-4">
-                  <div>
-                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                      Стоимость недвижимости, ₽
-                    </label>
-                    <input
-                      type="text"
-                      name="propertyPrice"
-                      value={mortgageData.propertyPrice}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '');
-                        setMortgageData({ ...mortgageData, propertyPrice: formatNumber(value) });
-                      }}
-                      placeholder="Введите стоимость"
-                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                      Первоначальный взнос, ₽
-                    </label>
-                    <input
-                      type="text"
-                      name="initialPayment"
-                      value={mortgageData.initialPayment}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '');
-                        setMortgageData({ ...mortgageData, initialPayment: formatNumber(value) });
-                      }}
-                      placeholder="Введите сумму взноса"
-                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                      Срок кредита (лет)
-                    </label>
-                    <input
-                      type="text"
-                      name="loanTerm"
-                      value={mortgageData.loanTerm}
-                      onChange={handleMortgageChange}
-                      placeholder="Введите срок"
-                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-2"
-                    />
-                    <div className="flex flex-wrap gap-2">
-                      {[5, 10, 15, 20, 25, 30].map((term) => (
-                        <button
-                          key={term}
-                          type="button"
-                          onClick={() => setMortgageData({ ...mortgageData, loanTerm: term.toString() })}
-                          className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg border transition-colors ${
-                            mortgageData.loanTerm === term.toString()
-                              ? 'bg-[#6a040f] text-white border-[#6a040f]'
-                              : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
-                          }`}
-                        >
-                          {term}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                      Процентная ставка (% годовых)
-                    </label>
-                    <input
-                      type="text"
-                      name="interestRate"
-                      value={mortgageData.interestRate}
-                      onChange={handleMortgageChange}
-                      placeholder="Введите ставку"
-                      className="w-full px-3 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-2"
-                    />
-                    <div className="flex flex-wrap gap-2">
-                      {[7.5, 8, 8.5, 9, 9.5].map((rate) => (
-                        <button
-                          key={rate}
-                          type="button"
-                          onClick={() => setMortgageData({ ...mortgageData, interestRate: rate.toString() })}
-                          className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg border transition-colors ${
-                            mortgageData.interestRate === rate.toString()
-                              ? 'bg-[#6a040f] text-white border-[#6a040f]'
-                              : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
-                          }`}
-                        >
-                          {rate}%
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Правая часть - результаты */}
+              <div className="flex flex-col lg:flex-row gap-3 sm:gap-6 md:gap-8">
                 <div className="w-full lg:w-1/2">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Результаты расчета</h3>
-                  <div className="space-y-3 sm:space-y-4">
-                    <div className="border-b border-gray-200 pb-2 sm:pb-3">
-                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Сумма кредита</p>
-                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
-                        {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '—'}
-                      </p>
-                    </div>
-                    <div className="border-b border-gray-200 pb-2 sm:pb-3">
-                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Ежемесячный платеж</p>
-                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
-                        {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '—'}
-                      </p>
-                    </div>
-                    <div className="border-b border-gray-200 pb-2 sm:pb-3">
-                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Общая сумма выплат</p>
-                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
-                        {mortgageResults.totalPayment > 0 ? formatNumber(mortgageResults.totalPayment) + ' ₽' : '—'}
-                      </p>
+                  <h3 className="text-sm sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Параметр кредита</h3>
+                  <div className="space-y-2 sm:space-y-3 md:space-y-4">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
+                        Стоимость недвижимости, ₽
+                      </label>
+                      <input
+                        type="text"
+                        name="propertyPrice"
+                        value={mortgageData.propertyPrice}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          setMortgageData({ ...mortgageData, propertyPrice: formatNumber(value) });
+                        }}
+                        placeholder="Введите стоимость"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      />
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Переплата</p>
-                      <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
-                        {mortgageResults.overpayment > 0 ? formatNumber(mortgageResults.overpayment) + ' ₽' : '—'}
+                      <label className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
+                        Первоначальный взнос, ₽
+                      </label>
+                      <input
+                        type="text"
+                        name="initialPayment"
+                        value={mortgageData.initialPayment}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          setMortgageData({ ...mortgageData, initialPayment: formatNumber(value) });
+                        }}
+                        placeholder="Введите сумму взноса"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
+                        Срок кредита (лет)
+                      </label>
+                      <input
+                        type="text"
+                        name="loanTerm"
+                        value={mortgageData.loanTerm}
+                        onChange={handleMortgageChange}
+                        placeholder="Введите срок"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
+                      />
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        {[5, 10, 15, 20, 25, 30].map((term) => (
+                          <button
+                            key={term}
+                            type="button"
+                            onClick={() => setMortgageData({ ...mortgageData, loanTerm: term.toString() })}
+                            className={`px-2 sm:px-3 py-1 text-xs rounded-lg border transition-colors ${
+                              mortgageData.loanTerm === term.toString()
+                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                            }`}
+                          >
+                            {term}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
+                        Процентная ставка (% годовых)
+                      </label>
+                      <input
+                        type="text"
+                        name="interestRate"
+                        value={mortgageData.interestRate}
+                        onChange={handleMortgageChange}
+                        placeholder="Введите ставку"
+                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all mb-1 sm:mb-2"
+                      />
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        {[7.5, 8, 8.5, 9, 9.5].map((rate) => (
+                          <button
+                            key={rate}
+                            type="button"
+                            onClick={() => setMortgageData({ ...mortgageData, interestRate: rate.toString() })}
+                            className={`px-2 sm:px-3 py-1 text-xs rounded-lg border transition-colors ${
+                              mortgageData.interestRate === rate.toString()
+                                ? 'bg-[#6a040f] text-white border-[#6a040f]'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-[#6a040f]'
+                            }`}
+                          >
+                            {rate}%
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full lg:w-1/2">
+                  <h3 className="text-sm sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Результаты расчета</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-1 gap-2 sm:gap-3 md:gap-4">
+                    <div className="bg-white border-2 border-gray-200 rounded-lg p-2 sm:p-3 md:p-4 shadow-sm">
+                      <p className="text-xs text-gray-600 mb-1 sm:mb-1.5">Сумма кредита</p>
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                        {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '0 ₽'}
+                      </p>
+                    </div>
+                    <div className="bg-white border-2 border-gray-200 rounded-lg p-2 sm:p-3 md:p-4 shadow-sm md:order-3">
+                      <p className="text-xs text-gray-600 mb-1 sm:mb-1.5">Общая сумма выплат</p>
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                        {mortgageResults.totalPayment > 0 ? formatNumber(mortgageResults.totalPayment) + ' ₽' : '0 ₽'}
+                      </p>
+                    </div>
+                    <div className="bg-white border-2 border-gray-200 rounded-lg p-2 sm:p-3 md:p-4 shadow-sm md:order-2">
+                      <p className="text-xs text-gray-600 mb-1 sm:mb-1.5">Ежемесячный платеж</p>
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                        {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '0 ₽'}
+                      </p>
+                    </div>
+                    <div className="bg-white border-2 border-gray-200 rounded-lg p-2 sm:p-3 md:p-4 shadow-sm md:order-4">
+                      <p className="text-xs text-gray-600 mb-1 sm:mb-1.5">Переплата</p>
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                        {mortgageResults.overpayment > 0 ? formatNumber(mortgageResults.overpayment) + ' ₽' : '0 ₽'}
                       </p>
                     </div>
                   </div>
-                  
                   <button
                     onClick={() => {
                       calculateMortgage();
                       setMortgageStep('application');
                     }}
-                    className="w-full mt-4 sm:mt-6 bg-[#6a040f] text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="w-full mt-2 sm:mt-4 md:mt-6 bg-[#6a040f] text-white py-1.5 sm:py-2 md:py-3 px-3 sm:px-4 md:px-6 rounded-lg font-semibold text-xs sm:text-sm md:text-base lg:text-lg hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Далее
                   </button>
                 </div>
               </div>
               ) : (
-              <form onSubmit={handleMortgageApplicationSubmit} className="space-y-4 sm:space-y-6">
-                {/* Результаты расчета */}
-                <div className="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200">
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Результаты расчета</h3>
-                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                    <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-300">
-                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Ежемесячный платеж</p>
-                      <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
-                        {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '—'}
+              <form onSubmit={handleMortgageApplicationSubmit} className="space-y-2 sm:space-y-4 md:space-y-6">
+                <div className="bg-gray-50 p-2 sm:p-4 md:p-6 rounded-lg border border-gray-200">
+                  <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Результаты расчета</h3>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
+                    <div className="bg-white p-2 sm:p-3 md:p-4 rounded-lg border border-gray-300">
+                      <p className="text-xs text-gray-600 mb-0.5 sm:mb-1">Ежемесячный платеж</p>
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                        {mortgageResults.monthlyPayment > 0 ? formatNumber(mortgageResults.monthlyPayment) + ' ₽' : '0 ₽'}
                       </p>
                     </div>
-                    <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-300">
-                      <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Сумма кредита</p>
-                      <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
-                        {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '—'}
+                    <div className="bg-white p-2 sm:p-3 md:p-4 rounded-lg border border-gray-300">
+                      <p className="text-xs text-gray-600 mb-0.5 sm:mb-1">Сумма кредита</p>
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                        {mortgageResults.loanAmount > 0 ? formatNumber(mortgageResults.loanAmount) + ' ₽' : '0 ₽'}
                       </p>
                     </div>
                   </div>
                 </div>
-
-                {/* Контактные данные */}
                 <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Ваши контактные данные</h3>
-                  <div className="space-y-3 sm:space-y-4">
+                  <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Ваши контактные данные</h3>
+                  <div className="space-y-2 sm:space-y-3 md:space-y-4">
                     <div>
-                      <label htmlFor="mortgage-name" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
+                      <label htmlFor="mortgage-name" className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
                         Ваше имя *
                       </label>
                       <input
@@ -817,12 +809,12 @@ function ProjectDetail() {
                         value={mortgageApplicationData.name}
                         onChange={handleMortgageApplicationChange}
                         required
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                         placeholder="Введите ваше имя"
                       />
                     </div>
                     <div>
-                      <label htmlFor="mortgage-phone" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
+                      <label htmlFor="mortgage-phone" className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
                         Номер телефона *
                       </label>
                       <input
@@ -832,25 +824,23 @@ function ProjectDetail() {
                         value={mortgageApplicationData.phone}
                         onChange={handleMortgageApplicationChange}
                         required
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
+                        className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a040f] focus:border-transparent outline-none transition-all"
                         placeholder="Введите ваш телефон"
                       />
                     </div>
                   </div>
                 </div>
-
-                {/* Кнопки */}
-                <div className="flex gap-3 sm:gap-4">
+                <div className="flex gap-2 sm:gap-3 md:gap-4">
                   <button
                     type="button"
                     onClick={() => setMortgageStep('calculator')}
-                    className="flex-1 border-2 border-gray-300 text-gray-700 px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium text-sm sm:text-base"
+                    className="flex-1 border-2 border-gray-300 text-gray-700 px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium text-xs sm:text-sm md:text-base"
                   >
                     Назад
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-[#6a040f] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="flex-1 bg-[#6a040f] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base hover:bg-[#5a030c] transition-colors duration-200 shadow-md hover:shadow-lg"
                   >
                     Отправить заявку
                   </button>
