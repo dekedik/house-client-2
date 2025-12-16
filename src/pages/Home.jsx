@@ -163,22 +163,31 @@ function Home() {
             Индивидуальный подход к каждому клиенту!
           </p>
         </div>
-        {/* Кнопки слева внизу */}
-        <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex flex-col sm:flex-row gap-3 sm:gap-4 z-10" style={{ maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }}>
+        {/* Кнопки слева внизу - скрыты на мобильных */}
+        <div className="hidden md:flex absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex-col sm:flex-row gap-3 sm:gap-4 z-10" style={{ maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }}>
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Link
               to="/catalog"
-              className="bg-white px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 rounded-full font-semibold text-sm sm:text-base md:text-lg lg:text-xl transition-all duration-200 shadow-lg text-center backdrop-blur-sm text-[#6a040f]"
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg text-center backdrop-blur-sm text-[#6a040f] whitespace-nowrap"
               style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
             >
               Каталог
             </Link>
             <button
               onClick={() => setIsFormOpen(true)}
-              className="bg-white px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 rounded-full font-semibold text-sm sm:text-base md:text-lg lg:text-xl transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f]"
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f] whitespace-nowrap"
               style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
             >
               Рассчитать проект
+            </button>
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('openMortgageCalculator'));
+              }}
+              className="bg-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-200 shadow-lg backdrop-blur-sm text-[#6a040f] whitespace-nowrap"
+              style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
+            >
+              Рассчитать ипотеку
             </button>
           </div>
         </div>
