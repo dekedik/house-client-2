@@ -132,7 +132,7 @@
   select option:hover,
   select option:focus,
   select option:checked {
-    background-color: #540b0e !important;
+    background-color: #C85A3A !important;
     color: #ffffff !important;
   }
   

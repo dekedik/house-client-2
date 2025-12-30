@@ -37,7 +37,7 @@ function CustomSelect({ value, onChange, options, label, placeholder = 'Выбе
       )}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#540b0e] focus:border-transparent outline-none transition-all bg-white hover:border-[#540b0e] cursor-pointer flex items-center justify-between"
+        className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C1F14] focus:border-transparent outline-none transition-all bg-white hover:border-[#2C1F14] cursor-pointer flex items-center justify-between"
       >
         <span className={selectedOption ? 'text-gray-900' : 'text-gray-500'}>
           {displayText}
@@ -60,7 +60,7 @@ function CustomSelect({ value, onChange, options, label, placeholder = 'Выбе
               onClick={() => handleSelect(option.value)}
               className={`px-4 py-3 cursor-pointer transition-colors ${
                 value === option.value
-                  ? 'bg-[#540b0e] text-white'
+                  ? 'bg-[#C85A3A] text-white'
                   : 'text-gray-900 hover:bg-gray-100'
               }`}
             >

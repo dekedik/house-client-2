@@ -123,7 +123,7 @@ function ProjectCard({ project }) {
               )}
             </div>
             {project.discount && (
-              <span className="ml-2 px-2 py-1 bg-[#540b0e]/10 text-[#540b0e] text-xs font-semibold rounded">
+              <span className="ml-2 px-2 py-1 bg-[#2C1F14]/10 text-[#2C1F14] text-xs font-semibold rounded">
                 {project.discount}
               </span>
             )}
@@ -169,7 +169,7 @@ function ProjectCard({ project }) {
               sessionStorage.setItem('catalogScrollPosition', window.scrollY.toString());
               navigate(`/project/${project.id}`);
             }}
-            className="w-fit bg-[#540b0e] text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base md:text-lg hover:bg-[#43090b] transition-colors font-medium rounded-lg"
+            className="w-fit bg-[#2C1F14] text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base md:text-lg hover:bg-[#3D2817] transition-colors font-medium rounded-lg"
           >
             Подробнее
           </button>
