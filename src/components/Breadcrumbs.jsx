@@ -40,30 +40,43 @@ function Breadcrumbs() {
 
   const breadcrumbs = getBreadcrumbs();
 
+  // Используем единую ширину для всех страниц
+  const containerWidth = 'max-w-7xl';
+
   return (
-    <nav className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-3 sm:py-4" aria-label="Хлебные крошки">
-      <ol className="flex items-center text-sm sm:text-base">
-        {breadcrumbs.map((crumb, index) => (
-          <li key={crumb.path} className="flex items-center">
-            {index > 0 && (
-              <span className="mx-2 text-gray-400">-</span>
-            )}
-            {crumb.active ? (
-              <span className="text-gray-900 font-medium">{crumb.label}</span>
-            ) : (
-              <Link 
-                to={crumb.path} 
-                className="text-[#2C1F14] hover:text-[#3D2817] transition-colors"
-              >
-                {crumb.label}
-              </Link>
-            )}
-          </li>
-        ))}
-      </ol>
+    <nav className="w-full py-4 sm:py-5" aria-label="Хлебные крошки">
+      <div className={`${containerWidth} mx-auto px-4 sm:px-6 md:px-8 w-full`}>
+        <ol className="flex items-center flex-wrap gap-2">
+          {breadcrumbs.map((crumb, index) => (
+            <li key={crumb.path} className="flex items-center">
+              {index > 0 && (
+                <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              )}
+              {crumb.active ? (
+                <span className="text-[#2C1F14] font-semibold text-sm sm:text-base">
+                  {crumb.label}
+                </span>
+              ) : (
+                <Link 
+                  to={crumb.path} 
+                  className="group flex items-center gap-1.5 text-gray-600 hover:text-[#2C1F14] transition-colors text-sm sm:text-base font-medium"
+                >
+                  {index === 0 && (
+                    <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                  )}
+                  {crumb.label}
+                </Link>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
     </nav>
   );
 }
 
 export default Breadcrumbs;
-

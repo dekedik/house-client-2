@@ -1,10 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { api } from '../services/api';
 import CustomSelect from '../components/CustomSelect';
 import Breadcrumbs from '../components/Breadcrumbs';
+import PackagesComparison from '../components/PackagesComparison';
+import ConsultationPopup from '../components/ConsultationPopup';
 
 function ProjectDetail() {
   const { id } = useParams();
+  const [house, setHouse] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
@@ -33,8 +38,43 @@ function ProjectDetail() {
     overpayment: 0
   });
 
-  // Mock data - в реальном приложении это будет загрузка с API
-  const projects = [
+  // Загрузка дома с API
+  useEffect(() => {
+    const loadHouse = async () => {
+      try {
+        setLoading(true);
+        const houseData = await api.getHouseById(id);
+        setHouse(houseData);
+      } catch (error) {
+        console.error('Ошибка при загрузке дома:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (id) {
+      loadHouse();
+    }
+  }, [id]);
+
+  const [isFloorPlanModalOpen, setIsFloorPlanModalOpen] = useState(false);
+
+  // Преобразуем house в формат project для совместимости
+  const project = house ? {
+    id: house.id,
+    name: house.name,
+    priceFrom: house.priceFrom,
+    area: house.area,
+    rooms: house.rooms,
+    description: house.description,
+    fullDescription: house.fullDescription,
+    characteristics: house.characteristics || [],
+    images: house.images || [],
+    floorPlan: house.floor_plan || house.floorPlan || null
+  } : null;
+
+  // Удален статический массив projects - данные теперь загружаются с API
+  // Старый код:
+  /* const projects = [
     { 
       id: 1, 
       name: 'Коттедж "Премиум"', 
@@ -179,26 +219,26 @@ function ProjectDetail() {
       ],
       images: ['/images/houses/dacha-mini.jpg']
     },
-  ];
-
-  const project = projects.find(p => p.id === Number(id));
+  ]; */
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id]);
+    if (house) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [id, house]);
 
   // Обработка изображений
   const getImages = () => {
-    if (project?.images && Array.isArray(project.images) && project.images.length > 0) {
-      return project.images;
+    if (house?.images && Array.isArray(house.images) && house.images.length > 0) {
+      return house.images;
     }
-    if (project?.image) {
-      return [project.image];
+    if (house?.image) {
+      return [house.image];
     }
     return ['/images/houses/placeholder.svg'];
   };
 
-  const images = project ? getImages() : [];
+  const images = house ? getImages() : [];
 
   const handleNext = () => {
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
@@ -352,6 +392,16 @@ function ProjectDetail() {
     }
   }, [mortgageData, isMortgageCalculatorOpen, calculateMortgage]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Загрузка проекта...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!project) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -467,28 +517,39 @@ function ProjectDetail() {
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">{project.name}</h1>
 
-            {/* Цена от, Комнаты, Площадь */}
-            <div className="mb-6 sm:mb-8">
-              {project.priceFrom && (
-                <div className="flex flex-col mb-4 sm:mb-6">
-                  <span className="text-sm sm:text-base md:text-lg text-gray-600 mb-1">Цена от:</span>
-                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
-                    {project.priceFrom}
-                  </span>
-                </div>
-              )}
-
+            {/* Комнаты, Площадь */}
+            <div className="mb-6 sm:mb-8 space-y-4">
               {project.rooms && (
-                <div className="flex flex-col mb-3 sm:mb-4">
-                  <span className="text-sm sm:text-base md:text-lg text-gray-600 mb-1">Комнаты:</span>
-                  <span className="text-lg sm:text-xl md:text-2xl font-medium text-gray-900">{project.rooms}</span>
+                <div className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl p-5 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-[#D4A574] overflow-hidden">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-8 -translate-y-8"></div>
+                  <div className="relative flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm text-gray-500 font-semibold uppercase tracking-wider mb-1">Комнаты</div>
+                      <div className="text-2xl font-bold text-[#2C1F14]">{project.rooms}</div>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {project.area && (
-                <div className="flex flex-col mb-3 sm:mb-4">
-                  <span className="text-sm sm:text-base md:text-lg text-gray-600 mb-1">Площадь:</span>
-                  <span className="text-lg sm:text-xl md:text-2xl font-medium text-gray-900">{project.area}</span>
+                <div className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl p-5 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-[#D4A574] overflow-hidden">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-8 -translate-y-8"></div>
+                  <div className="relative flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm text-gray-500 font-semibold uppercase tracking-wider mb-1">Площадь</div>
+                      <div className="text-2xl font-bold text-[#2C1F14]">{project.area}</div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -497,74 +558,182 @@ function ProjectDetail() {
             <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
               <button
                 onClick={() => setIsCallFormOpen(true)}
-                className="w-full bg-[#2C1F14] text-white px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#3D2817] transition-colors font-medium rounded-lg"
+                className="w-full bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white px-6 py-4 text-lg font-bold rounded-xl hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
               >
-                Заказать звонок
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span>Заказать звонок</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
               </button>
               <button
                 onClick={() => setIsMortgageCalculatorOpen(true)}
-                className="w-full border-2 border-[#2C1F14] text-[#2C1F14] px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg md:text-xl hover:bg-[#2C1F14] hover:text-white transition-colors font-medium rounded-lg"
+                className="w-full border-2 border-[#2C1F14] text-[#2C1F14] px-6 py-4 text-lg font-bold rounded-xl hover:bg-gradient-to-r hover:from-[#2C1F14] hover:to-[#D4A574] hover:text-white hover:border-transparent transition-all duration-300 flex items-center justify-center gap-2 group"
               >
-                Рассчитать ипотеку
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <span>Рассчитать ипотеку</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Описание и характеристики */}
-        <div className="space-y-6 sm:space-y-8">
+        {/* Описание, характеристики и планировка */}
+        <div className="space-y-12 mt-12">
           {/* Описание */}
-          <div className="w-full lg:w-2/3">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Описание</h2>
-            <p className="text-gray-700 leading-relaxed mb-3 sm:mb-4 text-base sm:text-lg md:text-xl">
-              {project.description}
-            </p>
-            {project.fullDescription && (
-              <p className="text-gray-700 leading-relaxed text-base sm:text-lg md:text-xl">
-                {project.fullDescription}
-              </p>
-            )}
+          <div className="relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#2C1F14] to-[#D4A574]"></div>
+            <div className="pl-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#2C1F14] mb-6 flex items-center gap-3">
+                <svg className="w-8 h-8 text-[#2C1F14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Описание проекта
+              </h2>
+              <div className="space-y-4 text-gray-700">
+                <p className="text-lg leading-relaxed">
+                  {project.description}
+                </p>
+                {project.fullDescription && (
+                  <p className="text-lg leading-relaxed">
+                    {project.fullDescription}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
+
+          {/* Планировка */}
+          {project.floorPlan && (
+            <div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#2C1F14] mb-6 flex items-center gap-3">
+                <svg className="w-8 h-8 text-[#2C1F14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
+                </svg>
+                Планировка
+              </h2>
+              <div 
+                className="group relative cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 max-w-4xl mx-auto"
+                onClick={() => setIsFloorPlanModalOpen(true)}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2C1F14]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+                <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="bg-white/95 backdrop-blur-sm px-6 py-3 rounded-full shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-[#2C1F14] font-bold flex items-center gap-2">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                      Посмотреть планировку
+                    </span>
+                  </div>
+                </div>
+                <img
+                  src={project.floorPlan.startsWith('http') ? project.floorPlan : `https://admin-doman-horizont.ru${project.floorPlan}`}
+                  alt="Планировка дома"
+                  className="w-full h-auto transform group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    e.target.src = '/images/houses/placeholder.svg';
+                  }}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Характеристики */}
           <div>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Характеристики</h2>
-            <ul className="space-y-2 sm:space-y-3">
-              {project.characteristics?.map((char, index) => (
-                <li key={index} className="flex items-center text-gray-700 pb-2 sm:pb-3 text-sm sm:text-base md:text-lg">
-                  <span className="font-medium">{char}</span>
-                </li>
-              ))}
-            </ul>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#2C1F14] mb-6 flex items-center gap-3">
+              <svg className="w-8 h-8 text-[#2C1F14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+              </svg>
+              Характеристики
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {project.characteristics?.map((char, index) => {
+                const parts = char.split(':');
+                const label = parts[0]?.trim() || '';
+                const value = parts[1]?.trim() || char;
+                
+                return (
+                  <div 
+                    key={index} 
+                    className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#D4A574] overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-300"></div>
+                    {label && value !== char ? (
+                      <>
+                        <div className="relative text-xs sm:text-sm text-gray-500 mb-2 font-semibold uppercase tracking-wider">
+                          {label}
+                        </div>
+                        <div className="relative text-lg sm:text-xl font-bold text-[#2C1F14] group-hover:text-[#D4A574] transition-colors duration-300">
+                          {value}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="relative text-base font-semibold text-gray-800">
+                        {char}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
+        </div>
+
+        {/* Сравнение комплектаций */}
+        <div className="mt-12">
+          <PackagesComparison />
         </div>
 
         {/* Модальное окно формы "Заказать звонок" */}
         {isCallFormOpen && (
           <div 
-            className="modal-overlay bg-black bg-opacity-50 z-[70] flex items-center justify-center p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fadeIn"
             onClick={() => setIsCallFormOpen(false)}
           >
             <div 
-              className="modal-content bg-white rounded-lg p-8 max-w-md w-full animate-fadeIn"
+              className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-scaleIn relative overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                  Заказать звонок
-                </h2>
+              {/* Декоративный элемент */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-12 -translate-y-12"></div>
+
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-xl flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-2xl font-bold text-[#2C1F14]">
+                    Заказать звонок
+                  </h2>
+                </div>
                 <button
                   onClick={() => setIsCallFormOpen(false)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl"
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
                   aria-label="Закрыть"
                 >
-                  ✕
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
-              <form onSubmit={handleCallFormSubmit} className="space-y-4 sm:space-y-6">
+
+              <p className="text-gray-600 mb-6">
+                Оставьте свои контакты, и мы свяжемся с вами в ближайшее время
+              </p>
+
+              <form onSubmit={handleCallFormSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="call-name" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                    Имя
+                  <label htmlFor="call-name" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Ваше имя
                   </label>
                   <input
                     type="text"
@@ -573,12 +742,12 @@ function ProjectDetail() {
                     value={callFormData.name}
                     onChange={handleCallFormChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C1F14] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#D4A574] focus:border-transparent outline-none transition-all"
                     placeholder="Введите ваше имя"
                   />
                 </div>
                 <div>
-                  <label htmlFor="call-phone" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
+                  <label htmlFor="call-phone" className="block text-sm font-semibold text-gray-700 mb-2">
                     Телефон
                   </label>
                   <input
@@ -588,8 +757,8 @@ function ProjectDetail() {
                     value={callFormData.phone}
                     onChange={handleCallFormChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C1F14] focus:border-transparent outline-none transition-all"
-                    placeholder="Введите ваш телефон"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#D4A574] focus:border-transparent outline-none transition-all"
+                    placeholder="+7 (___) ___-__-__"
                   />
                 </div>
                 <CustomSelect
@@ -605,9 +774,12 @@ function ProjectDetail() {
                 />
                 <button
                   type="submit"
-                  className="w-full bg-[#2C1F14] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#3D2817] transition-colors duration-200 shadow-md hover:shadow-lg"
+                  className="w-full bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
                 >
-                  Отправить
+                  <span>Отправить</span>
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
                 </button>
               </form>
             </div>
@@ -617,26 +789,38 @@ function ProjectDetail() {
         {/* Модальное окно калькулятора ипотеки */}
         {isMortgageCalculatorOpen && (
           <div 
-            className="modal-overlay bg-black bg-opacity-50 z-[60] flex items-center justify-center p-2 sm:p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-2 sm:p-4 animate-fadeIn overflow-y-auto"
             onClick={() => setIsMortgageCalculatorOpen(false)}
           >
             <div 
-              className="modal-content bg-white rounded-lg p-3 sm:p-6 md:p-8 max-w-2xl w-full animate-fadeIn max-h-[95vh] overflow-y-auto"
+              className="bg-white rounded-2xl p-3 sm:p-6 md:p-8 max-w-2xl w-full shadow-2xl animate-scaleIn relative overflow-hidden max-h-[95vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-2 sm:mb-4 md:mb-6">
-                <h2 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 pr-2">
-                  {mortgageStep === 'calculator' ? 'Калькулятор ипотеки' : 'Оставить заявку на ипотеку'}
-                </h2>
+              {/* Декоративный элемент */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-12 -translate-y-12"></div>
+              
+              <div className="flex items-center justify-between mb-2 sm:mb-4 md:mb-6">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-base sm:text-xl md:text-2xl font-bold text-[#2C1F14] pr-2">
+                    {mortgageStep === 'calculator' ? 'Калькулятор ипотеки' : 'Оставить заявку на ипотеку'}
+                  </h2>
+                </div>
                 <button
                   onClick={() => {
                     setIsMortgageCalculatorOpen(false);
                     setMortgageStep('calculator');
                   }}
-                  className="text-gray-500 hover:text-gray-700 text-xl sm:text-2xl md:text-3xl flex-shrink-0"
+                  className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
                   aria-label="Закрыть"
                 >
-                  ✕
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
 
@@ -770,9 +954,12 @@ function ProjectDetail() {
                       calculateMortgage();
                       setMortgageStep('application');
                     }}
-                    className="w-full mt-2 sm:mt-4 md:mt-6 bg-[#2C1F14] text-white py-1.5 sm:py-2 md:py-3 px-3 sm:px-4 md:px-6 rounded-lg font-semibold text-xs sm:text-sm md:text-base lg:text-lg hover:bg-[#3D2817] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="w-full mt-2 sm:mt-4 md:mt-6 bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white py-2 sm:py-3 md:py-4 px-3 sm:px-4 md:px-6 rounded-xl font-bold text-xs sm:text-sm md:text-base hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
                   >
-                    Далее
+                    <span>Далее</span>
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -834,15 +1021,18 @@ function ProjectDetail() {
                   <button
                     type="button"
                     onClick={() => setMortgageStep('calculator')}
-                    className="flex-1 border-2 border-gray-300 text-gray-700 px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium text-xs sm:text-sm md:text-base"
+                    className="flex-1 border-2 border-gray-300 text-gray-700 px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-colors font-semibold text-xs sm:text-sm md:text-base"
                   >
                     Назад
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-[#2C1F14] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base hover:bg-[#3D2817] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="flex-1 bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-xl font-bold text-xs sm:text-sm md:text-base hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
                   >
-                    Отправить заявку
+                    <span>Отправить заявку</span>
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
                   </button>
                 </div>
               </form>
@@ -850,7 +1040,54 @@ function ProjectDetail() {
             </div>
           </div>
         )}
+
+        {/* Модальное окно планировки */}
+        {isFloorPlanModalOpen && project.floorPlan && (
+          <div 
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fadeIn overflow-y-auto"
+            onClick={() => setIsFloorPlanModalOpen(false)}
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+          >
+            <div 
+              className="bg-white rounded-2xl p-4 sm:p-6 max-w-5xl w-full relative shadow-2xl animate-scaleIn"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setIsFloorPlanModalOpen(false)}
+                className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 z-10 bg-white rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all"
+                aria-label="Закрыть"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <img
+                src={project.floorPlan.startsWith('http') ? project.floorPlan : `https://admin-doman-horizont.ru${project.floorPlan}`}
+                alt="Планировка дома"
+                className="w-full h-auto max-h-[85vh] object-contain rounded-xl"
+                onError={(e) => {
+                  e.target.src = '/images/houses/placeholder.svg';
+                }}
+              />
+              <div className="mt-4 flex justify-center">
+                <a
+                  href={project.floorPlan.startsWith('http') ? project.floorPlan : `https://admin-doman-horizont.ru${project.floorPlan}`}
+                  download
+                  className="bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white px-6 py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center gap-2 group"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  <span>Скачать планировку</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Всплывающий блок консультации */}
+      <ConsultationPopup />
     </div>
   );
 }

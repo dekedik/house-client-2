@@ -1,0 +1,15 @@
+# Простой Dockerfile для использования уже собранных файлов
+FROM nginx:alpine
+
+# Копируем собранные файлы из dist
+COPY dist /usr/share/nginx/html
+
+# Копируем конфигурацию nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Открываем порты 80 и 443
+EXPOSE 80 443
+
+# nginx запускается автоматически
+CMD ["nginx", "-g", "daemon off;"]
+

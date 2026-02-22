@@ -294,14 +294,17 @@ function Header() {
               </Link>
               <button
                 onClick={() => setIsCallFormOpen(true)}
-                className={`hover:opacity-80 transition-opacity font-medium text-base lg:text-lg px-4 py-2 border-2 rounded-full ${
+                className={`font-medium text-base lg:text-lg px-4 py-2 border-2 rounded-full transition-all duration-300 flex items-center gap-2 group ${
                   isScrolledPastImage 
-                    ? 'bg-[#2C1F14] text-white border-[#2C1F14]' 
-                    : 'text-white border-white'
+                    ? 'bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white border-transparent hover:shadow-lg' 
+                    : 'text-white border-white hover:bg-white/10'
                 }`}
                 style={isScrolledPastImage ? {} : linkStyle}
               >
-                Заказать звонок
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span>Заказать звонок</span>
               </button>
             </div>
 
@@ -394,29 +397,46 @@ function Header() {
           {/* Модальное окно формы "Заказать звонок" */}
           {isCallFormOpen && (
             <div 
-              className="modal-overlay bg-black bg-opacity-50 z-[70] flex items-center justify-center p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fadeIn"
               onClick={() => setIsCallFormOpen(false)}
             >
               <div 
-                className="modal-content bg-white rounded-lg p-8 max-w-md w-full animate-fadeIn"
+                className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-scaleIn relative overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex justify-between items-center mb-4 sm:mb-6">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                    Заказать звонок
-                  </h2>
+                {/* Декоративный элемент */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-12 -translate-y-12"></div>
+
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-xl flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-[#2C1F14]">
+                      Заказать звонок
+                    </h2>
+                  </div>
                   <button
                     onClick={() => setIsCallFormOpen(false)}
-                    className="text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl"
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
                     aria-label="Закрыть"
                   >
-                    ✕
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                   </button>
                 </div>
-                <form onSubmit={handleCallFormSubmit} className="space-y-4 sm:space-y-6">
+
+                <p className="text-gray-600 mb-6">
+                  Оставьте свои контакты, и мы свяжемся с вами в ближайшее время
+                </p>
+
+                <form onSubmit={handleCallFormSubmit} className="space-y-4">
                   <div>
-                    <label htmlFor="call-name" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                      Имя
+                    <label htmlFor="call-name" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Ваше имя
                     </label>
                     <input
                       type="text"
@@ -425,12 +445,12 @@ function Header() {
                       value={callFormData.name}
                       onChange={handleCallFormChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C1F14] focus:border-transparent outline-none transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#D4A574] focus:border-transparent outline-none transition-all"
                       placeholder="Введите ваше имя"
                     />
                   </div>
                   <div>
-                    <label htmlFor="call-phone" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
+                    <label htmlFor="call-phone" className="block text-sm font-semibold text-gray-700 mb-2">
                       Телефон
                     </label>
                     <input
@@ -440,8 +460,8 @@ function Header() {
                       value={callFormData.phone}
                       onChange={handleCallFormChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C1F14] focus:border-transparent outline-none transition-all"
-                      placeholder="Введите ваш телефон"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#D4A574] focus:border-transparent outline-none transition-all"
+                      placeholder="+7 (___) ___-__-__"
                     />
                   </div>
                   <CustomSelect
@@ -457,9 +477,12 @@ function Header() {
                   />
                   <button
                     type="submit"
-                    className="w-full bg-[#2C1F14] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#3D2817] transition-colors duration-200 shadow-md hover:shadow-lg"
+                    className="w-full bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
                   >
-                    Отправить
+                    <span>Отправить</span>
+                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
                   </button>
                 </form>
               </div>
@@ -469,29 +492,41 @@ function Header() {
           {/* Модальное окно калькулятора ипотеки */}
           {isMortgageCalculatorOpen && (
             <div 
-              className="modal-overlay bg-black bg-opacity-50 z-[60] flex items-center justify-center p-2 sm:p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-2 sm:p-4 animate-fadeIn overflow-y-auto"
               onClick={() => {
                 setIsMortgageCalculatorOpen(false);
                 setMortgageStep('calculator');
               }}
             >
               <div 
-                className="modal-content bg-white rounded-lg p-3 sm:p-6 md:p-8 max-w-2xl w-full animate-fadeIn max-h-[95vh] overflow-y-auto"
+                className="bg-white rounded-2xl p-3 sm:p-6 md:p-8 max-w-2xl w-full shadow-2xl animate-scaleIn relative overflow-hidden max-h-[95vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex justify-between items-center mb-2 sm:mb-4 md:mb-6">
-                  <h2 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 pr-2">
-                    {mortgageStep === 'calculator' ? 'Калькулятор ипотеки' : 'Оставить заявку на ипотеку'}
-                  </h2>
+                {/* Декоративный элемент */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-12 -translate-y-12"></div>
+
+                <div className="flex items-center justify-between mb-2 sm:mb-4 md:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-base sm:text-xl md:text-2xl font-bold text-[#2C1F14] pr-2">
+                      {mortgageStep === 'calculator' ? 'Калькулятор ипотеки' : 'Оставить заявку на ипотеку'}
+                    </h2>
+                  </div>
                   <button
                     onClick={() => {
                       setIsMortgageCalculatorOpen(false);
                       setMortgageStep('calculator');
                     }}
-                    className="text-gray-500 hover:text-gray-700 text-xl sm:text-2xl md:text-3xl flex-shrink-0"
+                    className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
                     aria-label="Закрыть"
                   >
-                    ✕
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                   </button>
                 </div>
 
@@ -628,9 +663,12 @@ function Header() {
                         calculateMortgage();
                         setMortgageStep('application');
                       }}
-                      className="w-full mt-2 sm:mt-4 md:mt-6 bg-[#2C1F14] text-white py-1.5 sm:py-2 md:py-3 px-3 sm:px-4 md:px-6 rounded-lg font-semibold text-xs sm:text-sm md:text-base lg:text-lg hover:bg-[#3D2817] transition-colors duration-200 shadow-md hover:shadow-lg"
+                      className="w-full mt-2 sm:mt-4 md:mt-6 bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white py-2 sm:py-3 md:py-4 px-3 sm:px-4 md:px-6 rounded-xl font-bold text-xs sm:text-sm md:text-base hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
                     >
-                      Далее
+                      <span>Далее</span>
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
                     </button>
                   </div>
                 </div>
@@ -692,15 +730,18 @@ function Header() {
                     <button
                       type="button"
                       onClick={() => setMortgageStep('calculator')}
-                      className="flex-1 border-2 border-gray-300 text-gray-700 px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors font-medium text-xs sm:text-sm md:text-base"
+                      className="flex-1 border-2 border-gray-300 text-gray-700 px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-colors font-semibold text-xs sm:text-sm md:text-base"
                     >
                       Назад
                     </button>
                     <button
                       type="submit"
-                      className="flex-1 bg-[#2C1F14] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base hover:bg-[#3D2817] transition-colors duration-200 shadow-md hover:shadow-lg"
+                      className="flex-1 bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-xl font-bold text-xs sm:text-sm md:text-base hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
                     >
-                      Отправить заявку
+                      <span>Отправить заявку</span>
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
                     </button>
                   </div>
                 </form>
@@ -712,91 +753,112 @@ function Header() {
           {/* Модальное окно формы "Рассчитать проект" */}
           {isProjectFormOpen && (
             <div 
-              className="modal-overlay bg-black bg-opacity-50 z-[70] flex items-center justify-center p-4 overflow-y-auto fixed top-0 left-0 right-0 bottom-0"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fadeIn"
               onClick={() => {
                 setIsProjectFormOpen(false);
                 setIsProjectFormSubmitted(false);
               }}
             >
               <div 
-                className="modal-content bg-white rounded-lg p-8 max-w-2xl w-full animate-fadeIn"
+                className="bg-white rounded-2xl p-8 max-w-2xl w-full shadow-2xl animate-scaleIn relative overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex justify-between items-center mb-4 sm:mb-6">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                    {isProjectFormSubmitted ? 'Спасибо!' : 'Рассчитать проект'}
-                  </h2>
-                  <button
-                    onClick={() => {
-                      setIsProjectFormOpen(false);
-                      setIsProjectFormSubmitted(false);
-                    }}
-                    className="text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl"
-                    aria-label="Закрыть"
-                  >
-                    ✕
-                  </button>
-                </div>
+                {/* Декоративный элемент */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#2C1F14]/5 to-transparent rounded-bl-full transform translate-x-12 -translate-y-12"></div>
                 
                 {isProjectFormSubmitted ? (
-                  <div className="text-center py-8 sm:py-12">
-                    <div className="mb-4 sm:mb-6">
-                      <svg className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-[#2C1F14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <div className="text-center py-8">
+                    <div className="w-20 h-20 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                      <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+                    <h3 className="text-2xl font-bold text-[#2C1F14] mb-3">
                       Спасибо за заявку!
-                    </p>
-                    <p className="text-base sm:text-lg md:text-xl text-gray-600">
-                      Мы с вами обязательно свяжемся!
+                    </h3>
+                    <p className="text-gray-600">
+                      Мы свяжемся с вами в ближайшее время
                     </p>
                   </div>
                 ) : (
-                <form onSubmit={handleProjectFormSubmit} className="space-y-4 sm:space-y-6">
-                  <div>
-                    <label htmlFor="project-name" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                      Имя
-                    </label>
-                    <input
-                      type="text"
-                      id="project-name"
-                      name="name"
-                      value={projectFormData.name}
-                      onChange={handleProjectFormChange}
-                      required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C1F14] focus:border-transparent outline-none transition-all"
-                      placeholder="Введите ваше имя"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="project-phone" className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
-                      Телефон
-                    </label>
-                    <input
-                      type="tel"
-                      id="project-phone"
-                      name="phone"
-                      value={projectFormData.phone}
-                      onChange={handleProjectFormChange}
-                      required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2C1F14] focus:border-transparent outline-none transition-all"
-                      placeholder="Введите ваш телефон"
-                    />
-                  </div>
-                  <CustomSelect
-                    value={projectFormData.object}
-                    onChange={handleProjectObjectChange}
-                    options={objectTypes}
-                    label="Объект"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-[#2C1F14] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-semibold text-sm sm:text-base md:text-lg hover:bg-[#3D2817] transition-colors duration-200 shadow-md hover:shadow-lg"
-                  >
-                    Отправить
-                  </button>
-                </form>
+                  <>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-xl flex items-center justify-center">
+                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold text-[#2C1F14]">
+                          Рассчитать проект
+                        </h2>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setIsProjectFormOpen(false);
+                          setIsProjectFormSubmitted(false);
+                        }}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Закрыть"
+                      >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <p className="text-gray-600 mb-6">
+                      Оставьте свои контакты, и мы рассчитаем стоимость вашего проекта
+                    </p>
+
+                    <form onSubmit={handleProjectFormSubmit} className="space-y-4">
+                      <div>
+                        <label htmlFor="project-name" className="block text-sm font-semibold text-gray-700 mb-2">
+                          Ваше имя
+                        </label>
+                        <input
+                          type="text"
+                          id="project-name"
+                          name="name"
+                          value={projectFormData.name}
+                          onChange={handleProjectFormChange}
+                          required
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#D4A574] focus:border-transparent outline-none transition-all"
+                          placeholder="Введите ваше имя"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="project-phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                          Телефон
+                        </label>
+                        <input
+                          type="tel"
+                          id="project-phone"
+                          name="phone"
+                          value={projectFormData.phone}
+                          onChange={handleProjectFormChange}
+                          required
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#D4A574] focus:border-transparent outline-none transition-all"
+                          placeholder="+7 (___) ___-__-__"
+                        />
+                      </div>
+                      <CustomSelect
+                        value={projectFormData.object}
+                        onChange={handleProjectObjectChange}
+                        options={objectTypes}
+                        label="Объект"
+                      />
+                      <button
+                        type="submit"
+                        className="w-full bg-gradient-to-r from-[#2C1F14] to-[#D4A574] text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                      >
+                        <span>Отправить</span>
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </button>
+                    </form>
+                  </>
                 )}
               </div>
             </div>

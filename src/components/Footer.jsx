@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SocialLinks from './SocialLinks';
 
 function Footer() {
   return (
@@ -37,12 +38,16 @@ function Footer() {
           {/* Контакты */}
           <div>
             <h3 className="text-white font-bold mb-5 text-lg">Контакты</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 mb-6">
               <li><a href="tel:+79185429777" className="text-white hover:opacity-80 transition-opacity">+7 (918) 542-97-77</a></li>
               <li><a href="tel:+79508503306" className="text-white hover:opacity-80 transition-opacity">+7 (950) 850-33-06</a></li>
               <li className="text-white">г. Ростов-на-Дону</li>
               <li className="text-white">ул. Михаила Нагибина, д.38</li>
             </ul>
+            <div>
+              <h4 className="text-white font-semibold mb-3 text-base">Мы в соцсетях</h4>
+              <SocialLinks />
+            </div>
           </div>
         </div>
       </div>

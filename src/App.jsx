@@ -9,13 +9,10 @@ import About from './pages/About';
 
 function App() {
   const location = useLocation();
-  const isProjectDetailPage = location.pathname.startsWith('/project/');
-  const isContactsPage = location.pathname === '/contacts';
-  const isAboutPage = location.pathname === '/about';
 
   return (
     <div className="min-h-screen flex flex-col w-full overflow-x-hidden">
-      {!isContactsPage && !isAboutPage && <Header />}
+      <Header />
       <main className="flex-grow w-full overflow-x-hidden">
         <Routes>
           <Route path="/" element={<Home />} />

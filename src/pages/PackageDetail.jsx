@@ -1,27 +1,64 @@
 import { useParams, Link, useNavigationType } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { packages } from '../data/packages';
+import { api } from '../services/api';
 import Breadcrumbs from '../components/Breadcrumbs';
+import PackagesComparison from '../components/PackagesComparison';
+import ConsultationPopup from '../components/ConsultationPopup';
 
 function PackageDetail() {
   const { id } = useParams();
   const navigationType = useNavigationType();
-  const pkg = packages.find(p => p.id === id);
+  const [pkg, setPkg] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
+    const loadPackage = async () => {
+      try {
+        setLoading(true);
+        const packageData = await api.getPackageById(id);
+        setPkg(packageData);
+      } catch (error) {
+        console.error('Ошибка при загрузке пакета:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPackage();
+  }, [id]);
+
+  useEffect(() => {
     // Прокрутка в начало страницы только при новом переходе (не при возврате назад)
-    if (navigationType !== 'POP') {
+    if (navigationType !== 'POP' && pkg) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [id, navigationType]);
+  }, [id, navigationType, pkg]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-[#2C1F14] border-t-transparent mb-4"></div>
+          <p className="text-gray-600 text-lg">Загрузка комплектации...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!pkg) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Комплектация не найдена</h1>
-          <Link to="/" className="text-accent-600 hover:text-accent-700">
+          <div className="w-20 h-20 bg-gradient-to-br from-[#2C1F14] to-[#D4A574] rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="text-3xl font-bold mb-4 text-[#2C1F14]">Комплектация не найдена</h1>
+          <Link to="/" className="inline-flex items-center gap-2 text-[#2C1F14] hover:text-[#D4A574] transition-colors font-semibold">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
             Вернуться на главную
           </Link>
         </div>
@@ -32,92 +69,89 @@ function PackageDetail() {
   const gallery = pkg.gallery || [pkg.image];
 
   return (
-    <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-28 pb-8 sm:pb-12 md:pb-16 w-full overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 md:pb-20 w-full overflow-x-hidden">
       <Breadcrumbs />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full">
-        {/* Кнопка "Назад" для мобильной версии */}
-        <Link 
-          to="/"
-          className="md:hidden inline-block text-[#2C1F14] hover:opacity-80 transition-opacity mb-6 text-base sm:text-lg font-medium"
-        >
-          Назад
-        </Link>
-        {/* Заголовок с кнопкой "Назад" для десктопной версии */}
-        <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 text-center md:text-left flex-1">
+        {/* Заголовок */}
+        <div className="text-center mb-12 mt-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2C1F14] mb-4">
             Комплектация "{pkg.title}"
           </h1>
+          <p className="text-lg text-gray-600">
+            Детальная информация о выбранной комплектации
+          </p>
         </div>
 
-        {/* Галерея проектов */}
-        <div className="mb-6 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-gray-900">
-            Галерея проектов
-          </h2>
-          
+        {/* Галерея */}
+        <div className="mb-16">
           {/* Основное изображение */}
-          <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[32rem] mb-3 sm:mb-4 overflow-hidden rounded-lg bg-gray-100">
-            <img 
-              src={gallery[selectedImage]} 
-              alt={`${pkg.title} - проект ${selectedImage + 1}`}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = '/images/houses/placeholder.svg';
-              }}
-            />
+          <div className="relative group mb-6">
+            <div className="w-full h-72 sm:h-96 md:h-[32rem] lg:h-[40rem] overflow-hidden rounded-3xl bg-gray-100 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+              <img 
+                src={gallery[selectedImage]} 
+                alt={`${pkg.title} - проект ${selectedImage + 1}`}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onError={(e) => {
+                  e.target.src = '/images/houses/placeholder.svg';
+                }}
+              />
+              {/* Индикатор текущего изображения */}
+              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full z-20">
+                <span className="text-sm font-semibold text-[#2C1F14]">
+                  {selectedImage + 1} / {gallery.length}
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Миниатюры */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-            {gallery.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedImage(idx)}
-                className={`overflow-hidden rounded-lg bg-gray-100 h-24 sm:h-28 md:h-32 lg:h-36 transition-all ${
-                  selectedImage === idx 
-                    ? 'ring-2 sm:ring-4 ring-[#2C1F14] scale-105' 
-                    : 'hover:opacity-80'
-                }`}
-              >
-                <img 
-                  src={img} 
-                  alt={`${pkg.title} - миниатюра ${idx + 1}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.src = '/images/houses/placeholder.svg';
-                  }}
-                />
-              </button>
-            ))}
-          </div>
+          {gallery.length > 1 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {gallery.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(idx)}
+                  className={`group relative overflow-hidden rounded-2xl h-28 sm:h-32 md:h-36 transition-all duration-300 ${
+                    selectedImage === idx 
+                      ? 'ring-4 ring-[#D4A574] scale-105 shadow-xl' 
+                      : 'hover:scale-105 hover:shadow-lg'
+                  }`}
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-t from-black/40 to-transparent transition-opacity ${
+                    selectedImage === idx ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'
+                  }`}></div>
+                  <img 
+                    src={img} 
+                    alt={`${pkg.title} - миниатюра ${idx + 1}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = '/images/houses/placeholder.svg';
+                    }}
+                  />
+                  {selectedImage === idx && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#2C1F14]/20">
+                      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <svg className="w-6 h-6 text-[#2C1F14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Кнопка "Назад" для мобильной версии над характеристиками */}
-        <div className="md:hidden mb-4">
-          <Link 
-            to="/"
-            className="inline-flex items-center text-[#2C1F14] hover:opacity-80 transition-opacity text-base font-medium"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Назад
-          </Link>
-        </div>
-
-        <div className="bg-white border-2 border-gray-200 rounded-lg p-4 sm:p-6 md:p-8">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-gray-900">
-            Характеристики комплектации
-          </h2>
-          <ul className="space-y-3 sm:space-y-4">
-            {pkg.features.map((feature, idx) => (
-              <li key={idx} className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed border-b border-gray-100 pb-2 sm:pb-3 last:border-0">
-                {feature}
-              </li>
-            ))}
-          </ul>
+        {/* Сравнение всех комплектаций */}
+        <div>
+          <PackagesComparison highlightPackage={pkg.title} />
         </div>
       </div>
+
+      {/* Всплывающий блок консультации */}
+      <ConsultationPopup />
     </div>
   );
 }

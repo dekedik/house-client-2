@@ -137,17 +137,8 @@ function ProjectCard({ project }) {
         </div>
 
          <div className="mt-auto">
-           {/* Цена от, Комнаты, Площадь в одну строку */}
+           {/* Комнаты, Площадь в одну строку */}
            <div className="flex flex-wrap gap-6 sm:gap-8 md:gap-12 mb-3 sm:mb-4">
-             {project.priceFrom && (
-               <div className="flex flex-col">
-                 <span className="text-xs sm:text-sm md:text-base text-gray-600">Цена от:</span>
-                 <span className="text-base sm:text-lg md:text-xl font-bold text-gray-900">
-                   {formatPrice(project.priceFrom)}
-                 </span>
-               </div>
-             )}
-
              {project.rooms && (
                <div className="flex flex-col">
                  <span className="text-xs sm:text-sm md:text-base text-gray-600">Комнаты:</span>
